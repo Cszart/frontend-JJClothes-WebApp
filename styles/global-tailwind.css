@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Button */
+/* Default */
+.ant-btn > span {
+	font-family: Taviraj, sans-serif;
+}
+
+/* Primary */
+.ant-btn-primary {
+	background: black;
+	color: white;
+	border-radius: 4px;
+}
