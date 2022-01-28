@@ -25,23 +25,4 @@ export const Footer: React.FC<Footer_Props> = ({
 	);
 };
 
-/*
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const session = await getSession(context);
-	const token = session?.accessToken as string;
-
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/auth/signin',
-				permanent: false,
-			},
-		};
-	}
-	return {
-		props: { session, equalizers, pageSectionsEquializers },
-	};
-};
-*/
-
 export default Footer;

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'next/link';
 
 // Interfaces
 import { Images } from 'interfaces';
@@ -21,7 +22,7 @@ export const Header: React.FC<Header_Props> = ({
 }) => {
 	return (
 		<div
-			className="header w-full flex flex-wrap justify-between items-center mb-14 px-25"
+			className="header flex flex-wrap justify-between items-center sticky top-0 z-50 w-full mb-14 px-25"
 			style={{ background: custom_header_color }}
 		>
 			{/* Logo */}
@@ -29,15 +30,21 @@ export const Header: React.FC<Header_Props> = ({
 
 			{/* Categories */}
 			<div className="categories flex flex-wrap justify-between items-center gap-2">
-				<h5 className="text-lg font-extrabold">News</h5>
+				<Link href={'#News'}>
+					<h5 className="text-lg font-extrabold">News</h5>
+				</Link>
 
 				<Divider className="w-4" />
 
-				<h5 className="text-lg font-extrabold">Woman</h5>
+				<Link href={'#Women'}>
+					<h5 className="text-lg font-extrabold">Women</h5>
+				</Link>
 
 				<Divider className="w-4" />
 
-				<h5 className="text-lg font-extrabold">Men</h5>
+				<Link href={'#Men'}>
+					<h5 className="text-lg font-extrabold">Men</h5>
+				</Link>
 			</div>
 
 			{/* Icons and button */}
@@ -58,24 +65,5 @@ export const Header: React.FC<Header_Props> = ({
 		</div>
 	);
 };
-
-/*
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const session = await getSession(context);
-	const token = session?.accessToken as string;
-
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/auth/signin', 
-				permanent: false,
-			},
-		};
-	}
-	return {
-		props: { session, equalizers, pageSectionsEquializers },
-	};
-};
-*/
 
 export default Header;
