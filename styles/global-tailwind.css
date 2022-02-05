@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--color-primary: #ff6c00;
+
+	--color-teal-501: #0ebea6;
+	--color-purple-301: #e2a9fd;
+	--color-red-601: #d84727;
+	--color-gray-701: #333333;
+	--color-zinc-101: #f7f6f4;
+	--color-esmerald-201: #a3e4db;
+}
+
 /* Button */
 /* Default */
 .ant-btn > span {
@@ -15,4 +26,16 @@
 	background: black;
 	color: white;
 	border-radius: 4px;
+}
+
+/* Ghost */
+/* Default */
+.container-antd > .ant-btn.ant-btn-background-ghost {
+	border: 1px solid var(--color-esmerald-201);
+	color: var(--color-esmerald-201);
+}
+
+.container-antd > .ant-btn.ant-btn-background-ghost:hover {
+	background-color: var(--color-esmerald-201);
+	color: var(--color-zinc-101);
 }

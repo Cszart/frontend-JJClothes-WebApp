@@ -41,7 +41,7 @@ export const Item_Inline: React.FC<Item_Props> = ({
 						<p className="text-xs text-gray-400">{`${product_item.price} $`}</p>
 						<Divider
 							custom_divider_color="#D93F3F"
-							className="absolute bottom-[8px] w-[50px]"
+							className="absolute bottom-[8px] w-[35px]"
 						/>
 					</div>
 				)}

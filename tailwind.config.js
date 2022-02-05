@@ -18,6 +18,8 @@ module.exports = {
 				'purple-301': '#E2A9FD',
 				'red-601': '#D84727',
 				'gray-701': '#333333',
+				'zinc-101': '#F7F6F4',
+				'esmerald-201': '#A3E4DB',
 			},
 		},
 	},

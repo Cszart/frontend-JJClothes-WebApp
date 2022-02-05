@@ -26,7 +26,11 @@ export const Header: React.FC<Header_Props> = ({
 			style={{ background: custom_header_color }}
 		>
 			{/* Logo */}
-			<img src={Images.logo_letters} className="logo w-[100px] h-[70px]" />
+			<Link href={'/'}>
+				<a>
+					<img src={Images.logo_letters} className="logo w-[100px] h-[70px]" />
+				</a>
+			</Link>
 
 			{/* Categories */}
 			<div className="categories flex flex-wrap justify-between items-center gap-2">

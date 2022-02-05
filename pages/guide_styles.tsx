@@ -42,20 +42,22 @@ const Guide_Styles = () => {
 				Items inline vertical oriented
 			</h1>
 			<Items_Displayer
+				title="Title 1"
 				product_type="inline"
 				orientation="vertical"
 				products_list={dummy_products}
-				className="inline w-full mb-10"
+				className="mb-10"
 			/>
 
 			<h1 className="text-2xl font-bold bg-black text-white mb-8">
 				Items inline horizontal oriented
 			</h1>
 			<Items_Displayer
+				title="Title"
 				product_type="inline"
 				orientation="horizontal"
 				products_list={dummy_products}
-				className="inline w-full mb-10"
+				className="w-full mb-10"
 			/>
 		</Layout>
 	);

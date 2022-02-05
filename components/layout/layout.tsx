@@ -25,7 +25,7 @@ export const Layout: React.FC<Layout_Props> = ({
 	}
 
 	return (
-		<div className="layout w-screen min-h-screen flex flex-col">
+		<div className="layout w-screen min-h-screen flex flex-col bg-zinc-101">
 			{withHeader && <Header custom_header_color={custom_header_color} />}
 
 			<div className={clsx('w-full', className)}>{children}</div>

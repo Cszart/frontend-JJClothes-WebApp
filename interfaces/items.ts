@@ -1,30 +1,30 @@
 // Tag
 export type Tags = {
-	id: string;
-	title: string;
+	_id: string;
+	name: string;
+	__v: number;
 };
 
 // Category
-export type Categories = {
-	id: string;
-	title: string;
+export type Category = {
+	_id: string;
+	name: string;
+	__v: number;
 };
 
 // Product
 export type Product = {
-	id: string;
+	_id: string;
 	title: string;
-	new_item: boolean;
 	price: number;
 	discount: number;
+	new_item?: boolean;
 	description: string;
-	warranty: string;
 	gallery: string[];
 	stock: number;
-
-	// relations
-	category: Categories[];
+	category: Category;
 	tags: Tags[];
+	__v: 0;
 };
 
 // Item Props

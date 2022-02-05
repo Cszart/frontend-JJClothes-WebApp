@@ -37,7 +37,7 @@ export const Item_type_3: React.FC<Item_Props> = ({
 						<p className="text-sm text-gray-400">{`${product_item.price} $`}</p>
 						<Divider
 							custom_divider_color="#D93F3F"
-							className="absolute bottom-[35px] w-[50px]"
+							className="absolute bottom-[35px] w-[40px]"
 						/>
 					</div>
 				)}

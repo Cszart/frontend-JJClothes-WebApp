@@ -54,7 +54,7 @@ export const Item_type_1: React.FC<Item_Props> = ({
 			)}
 		>
 			{/* tag */}
-			{(product_item.new_item || product_item.discount) && (
+			{(product_item.new_item || product_item.discount > 0) && (
 				<Item_Tag
 					new_item={product_item.new_item}
 					discount_amount={product_item.discount}
@@ -81,7 +81,7 @@ export const Item_type_1: React.FC<Item_Props> = ({
 					<p className="text-sm text-gray-400">{`${product_item.price} $`}</p>
 					<Divider
 						custom_divider_color="#D93F3F"
-						className="absolute bottom-[10px] w-[50px]"
+						className="absolute bottom-[10px] w-[40px]"
 					/>
 				</div>
 			)}
