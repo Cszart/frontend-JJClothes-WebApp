@@ -7,7 +7,7 @@ import { Layout } from 'components/layout';
 // Interfaces
 import { Images } from 'interfaces';
 
-// Antd
+// Antd library
 import { Button, Form, Input } from 'antd';
 
 const Login = () => {
@@ -19,7 +19,7 @@ const Login = () => {
 
 	return (
 		<Layout className="flex flex-row">
-			{/* Side image */}
+			{/* Side image halfscreen */}
 			<div className="w-1/2">
 				<img
 					src={Images.login_collage}
@@ -27,7 +27,7 @@ const Login = () => {
 				/>
 			</div>
 
-			{}
+			{/* Data halfscreen */}
 			<div className="flex flex-col p-36 w-1/2">
 				{/* text */}
 				<h3 className="text-base text-gray-800">Welcome back</h3>
@@ -52,7 +52,6 @@ const Login = () => {
 					>
 						<Input className="w-[95%] h-[50px]" />
 					</Form.Item>
-
 					{/* Password */}
 					<Form.Item
 						name="password"
@@ -74,7 +73,7 @@ const Login = () => {
 					</Form.Item>
 				</Form>
 
-				{/* forgot password */}
+				{/* Forgot password */}
 				<Link href={'/auth/forgot_password'}>
 					<a className="text-sm text-blue-800 text-center mb-4">
 						Forgot your password?

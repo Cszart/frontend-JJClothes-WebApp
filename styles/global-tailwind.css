@@ -6,7 +6,6 @@
 
 :root {
 	--color-primary: #ff6c00;
-
 	--color-teal-501: #0ebea6;
 	--color-purple-301: #e2a9fd;
 	--color-red-601: #d84727;
@@ -60,4 +59,25 @@
 .ant-input-password > .ant-input-suffix > .ant-input-password-icon {
 	position: relative;
 	right: 25px;
+}
+
+/* ****** */
+.text-modified {
+	text-align: justify;
+	text-align-last: center;
+}
+
+.btn-modified {
+	width: 100%;
+	padding: 0.5rem;
+	border-radius: 4px;
+	font-weight: bold;
+	color: white;
+}
+
+.input-modified {
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid black;
+	border-radius: 4px;
 }

@@ -59,12 +59,14 @@ export const Header: React.FC<Header_Props> = ({
 					<UserOutlined className="w-6 h-6" />
 				</div>
 
-				<Button
-					type="primary"
-					className="w-[100px] h-[50px] text-xl font-bold px-4 py-3"
-				>
-					Log in
-				</Button>
+				<Link href={'/auth/login'}>
+					<Button
+						type="primary"
+						className="w-[100px] h-[50px] text-xl font-bold px-4 py-3"
+					>
+						Log in
+					</Button>
+				</Link>
 			</div>
 		</div>
 	);
