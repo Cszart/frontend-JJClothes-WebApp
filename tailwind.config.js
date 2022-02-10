@@ -20,6 +20,7 @@ module.exports = {
 				'gray-701': '#333333',
 				'zinc-101': '#F7F6F4',
 				'esmerald-201': '#A3E4DB',
+				'purple-901': '#570C7A',
 			},
 		},
 	},

@@ -23,7 +23,7 @@ const Login = () => {
 			<div className="w-1/2">
 				<img
 					src={Images.login_collage}
-					className="w-full h-full object-cover"
+					className="w-full max-h-[100vh] object-cover"
 				/>
 			</div>
 
@@ -31,7 +31,7 @@ const Login = () => {
 			<div className="flex flex-col p-36 w-1/2">
 				{/* text */}
 				<h3 className="text-base text-gray-800">Welcome back</h3>
-				<h1 className="text-3xl font-bold text-gray-900">
+				<h1 className="text-3xl font-bold text-gray-900 mb-4">
 					Login to your account
 				</h1>
 
@@ -41,14 +41,16 @@ const Login = () => {
 					onFinish={onFinish}
 					layout="vertical"
 					autoComplete="off"
+					className="container-antd"
 				>
 					{/* Email */}
 					<Form.Item
 						name="email"
 						label="Email"
 						rules={[{ required: true, message: 'Please input your email!' }]}
+						className="mb-6"
 					>
-						<Input />
+						<Input className="w-[95%] h-[50px]" />
 					</Form.Item>
 
 					{/* Password */}
@@ -56,12 +58,17 @@ const Login = () => {
 						name="password"
 						label="Password"
 						rules={[{ required: true, message: 'Please input your password' }]}
+						className="mb-10"
 					>
-						<Input.Password />
+						<Input.Password className="w-95-percent h-50px" />
 					</Form.Item>
 
 					<Form.Item className="w-full">
-						<Button type="primary" htmlType="submit" className="w-full">
+						<Button
+							type="primary"
+							htmlType="submit"
+							className="w-full py-3 mb-4"
+						>
 							Login now
 						</Button>
 					</Form.Item>
@@ -69,11 +76,13 @@ const Login = () => {
 
 				{/* forgot password */}
 				<Link href={'/auth/forgot_password'}>
-					<a className="text-sm text-blue-800">Forgot your passwor?</a>
+					<a className="text-sm text-blue-800 text-center mb-4">
+						Forgot your password?
+					</a>
 				</Link>
 
 				{/* Register */}
-				<p className="text-base">
+				<p className="text-base text-center mt-auto">
 					Don&apos;t have an acoount?{' '}
 					<Link href={'/auth/register'}>
 						<a className="font-medium text-blue-800">Join Free Today!</a>
