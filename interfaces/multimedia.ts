@@ -7,6 +7,8 @@ export enum Images {
 	logo_letters = '/img/png/logo_letters.png',
 	secondSection = '/img/png/SecondSection.png',
 	thirdSection = '/img/png/ThirdSection.png',
+	register_picture = '/img/png/register_picture.png',
+	forgot_password_picture = '/img/png/forgot_password_picture.png'
 }
 
 export type Images_Types =
@@ -17,7 +19,9 @@ export type Images_Types =
 	| Images.logo_circle
 	| Images.logo_letters
 	| Images.secondSection
-	| Images.thirdSection;
+	| Images.thirdSection
+	| Images.register_picture
+	| Images.forgot_password_picture;
 
 export enum Icons {
 	magnifying = '/img/svg/magnifying.svg',

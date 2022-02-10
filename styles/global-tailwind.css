@@ -39,3 +39,28 @@
 	background-color: var(--color-esmerald-201);
 	color: var(--color-zinc-101);
 }
+
+
+
+
+
+
+.text-modified{
+	text-align: justify;
+	text-align-last: center;
+}
+
+.btn-modified{
+	width: 100%;
+	padding: 0.5rem;
+	border-radius: 4px;
+	font-weight: bold;
+	color: white;
+}
+
+.input-modified{
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid black;
+	border-radius: 4px;
+}
