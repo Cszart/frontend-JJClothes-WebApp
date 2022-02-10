@@ -2,6 +2,7 @@ export enum Images {
 	collection_carousel = '/img/png/collection_carousel.png',
 	firstSection = '/img/png/FirstSection.png',
 	highligthBanner = '/img/png/highligthBanner.png',
+	login_collage = '/img/png/login_collage.png',
 	logo_circle = '/img/png/logo_circle.png',
 	logo_letters = '/img/png/logo_letters.png',
 	secondSection = '/img/png/SecondSection.png',
@@ -12,6 +13,7 @@ export type Images_Types =
 	| Images.collection_carousel
 	| Images.firstSection
 	| Images.highligthBanner
+	| Images.login_collage
 	| Images.logo_circle
 	| Images.logo_letters
 	| Images.secondSection
