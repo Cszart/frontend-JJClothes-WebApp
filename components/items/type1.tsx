@@ -23,7 +23,7 @@ export const Item_Tag: React.FC<Item_Tag_Props> = ({
 			className={clsx(
 				'tag px-4',
 				{ 'bg-purple-301': new_item },
-				{ 'bg-red-601': discount_amount },
+				{ 'bg-teal-501': discount_amount },
 				className
 			)}
 		>

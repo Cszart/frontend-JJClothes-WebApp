@@ -63,10 +63,12 @@ export const Item_type_2: React.FC<Item_Props> = ({
 			<button
 				onClick={() => alert('Added to cart')}
 				className={clsx(
-					'w-full h-10 bg-purple-301 px-14',
+					'w-full h-10 px-14',
 					'align-center',
 					'text-white font-taviraj text-center text-base',
-					'mt-auto'
+					'mt-auto',
+					{ 'bg-purple-301': product_item.new_item },
+					{ 'bg-esmerald-201': product_item.discount }
 				)}
 			>
 				Add to cart

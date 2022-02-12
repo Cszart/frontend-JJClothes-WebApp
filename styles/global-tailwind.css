@@ -7,6 +7,7 @@
 :root {
 	--color-primary: #ff6c00;
 	--color-red-601: #d84727;
+	--color-orange-101: '#FFF3E4';
 	--color-purple-301: #e2a9fd;
 	--color-purple-901: #570c7a;
 	--color-esmerald-201: #a3e4db;
@@ -19,6 +20,11 @@
 
 /* Button */
 /* Default */
+.ant-btn {
+	background: var(--color-teal-501);
+	color: white;
+}
+
 .ant-btn > span {
 	font-family: Taviraj, sans-serif;
 }
@@ -32,18 +38,25 @@
 
 /* Ghost */
 /* Default */
-.container-antd > .ant-btn.ant-btn-background-ghost {
-	border: 1px solid var(--color-esmerald-201);
-	color: var(--color-esmerald-201);
+.ant-btn.ant-btn-background-ghost {
+	background-color: var(--color-zinc-101);
+	border: 1px solid var(--color-teal-501);
+	color: var(--color-teal-501);
 }
 
-.container-antd > .ant-btn.ant-btn-background-ghost:hover {
-	background-color: var(--color-esmerald-201);
+/* For background on banner */
+.ant-btn.ant-btn-background-ghost.bg-orange-101 {
+	background-color: var(--color-orange-101);
+	border: 1px solid var(--color-teal-501);
+	color: var(--color-teal-501);
+}
+
+.ant-btn.ant-btn-background-ghost:hover {
+	background-color: var(--color-teal-501);
 	color: var(--color-zinc-101);
 }
 
 /* Input */
-
 /* Password */
 /* Input tipo password width 95% */
 .ant-input-password.w-95-percent > .ant-input {

@@ -15,6 +15,7 @@ interface Items_Displayer_Props {
 	orientation?: 'vertical' | 'horizontal';
 	product_type?: 'type1' | 'type2' | 'type3' | 'inline';
 	products_list: Product[];
+	show_rows?: number;
 }
 
 export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
@@ -24,11 +25,12 @@ export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
 	orientation = 'horizontal',
 	product_type = 'type1',
 	products_list = [],
+	show_rows = 1,
 }) => {
 	return (
 		<div
 			className={clsx(
-				'flex flex-wrap gap-5',
+				'displayer flex flex-wrap',
 				{ 'flex-row': orientation === 'horizontal' },
 				{ 'flex-col': orientation === 'vertical' },
 				className
@@ -44,26 +46,30 @@ export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
 
 			{product_type === 'type1' &&
 				products_list.map((product_item: Product, key: number) => {
-					return (
-						<Item_type_1
-							key={key}
-							id={key}
-							className={className_product_item}
-							product_item={product_item}
-						/>
-					);
+					if (key < show_rows * 4) {
+						return (
+							<Item_type_1
+								key={key}
+								id={key}
+								className={className_product_item}
+								product_item={product_item}
+							/>
+						);
+					}
 				})}
 
 			{product_type === 'type2' &&
 				products_list.map((product_item: Product, key: number) => {
-					return (
-						<Item_type_2
-							key={key}
-							id={key}
-							className={className_product_item}
-							product_item={product_item}
-						/>
-					);
+					if (key < show_rows * 4) {
+						return (
+							<Item_type_2
+								key={key}
+								id={key}
+								className={className_product_item}
+								product_item={product_item}
+							/>
+						);
+					}
 				})}
 
 			{product_type === 'type3' &&
