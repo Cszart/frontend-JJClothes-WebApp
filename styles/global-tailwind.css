@@ -6,13 +6,13 @@
 
 :root {
 	--color-primary: #ff6c00;
-	--color-teal-501: #0ebea6;
-	--color-purple-301: #e2a9fd;
 	--color-red-601: #d84727;
+	--color-purple-301: #e2a9fd;
+	--color-purple-901: #570c7a;
+	--color-esmerald-201: #a3e4db;
+	--color-teal-501: #0ebea6;
 	--color-gray-701: #333333;
 	--color-zinc-101: #f7f6f4;
-	--color-esmerald-201: #a3e4db;
-	--color-purple-901: #570c7a;
 }
 
 /* ANTD */

@@ -1,32 +1,52 @@
+// Backend Structure
 // Tag
 export type Tags = {
-	_id: string;
 	name: string;
+
+	_id: string;
 	__v: number;
 };
 
 // Category
 export type Category = {
-	_id: string;
 	name: string;
+
+	_id: string;
 	__v: number;
 };
 
 // Product
 export type Product = {
-	_id: string;
 	title: string;
 	price: number;
 	discount: number;
 	new_item?: boolean;
 	description: string;
+	composition: string[];
 	gallery: string[];
+	initial_stock: number;
 	stock: number;
+
+	// Relations
 	category: Category;
 	tags: Tags[];
-	__v: 0;
+
+	_id: string;
+	__v: number;
 };
 
+// Product item, shopping cart
+export type Product_Item = {
+	quantity: number;
+
+	// Relations
+	product: Product;
+
+	_id: string;
+	__v: number;
+};
+
+// Frontend structure, components
 // Item Props
 export interface Item_Props {
 	id: number;
