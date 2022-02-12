@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 
 // Local components
 import { Layout } from 'components/layout';
@@ -9,6 +10,7 @@ import { Images } from 'interfaces';
 
 // Antd library
 import { Button, Form, Input } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const Login = () => {
 	const [form] = Form.useForm();
@@ -29,6 +31,12 @@ const Login = () => {
 
 			{/* Data halfscreen */}
 			<div className="flex flex-col p-36 w-1/2">
+				{/* Back icon */}
+				<ArrowLeftOutlined
+					onClick={() => Router.back()}
+					className="w-10 h-10"
+				/>
+
 				{/* text */}
 				<h3 className="text-base text-gray-800">Welcome back</h3>
 				<h1 className="text-3xl font-bold text-gray-900 mb-4">
