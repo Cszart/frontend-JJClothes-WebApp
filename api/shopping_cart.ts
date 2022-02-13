@@ -2,21 +2,33 @@ import axios from 'axios';
 import { ShoppingCart } from 'interfaces';
 
 export const post_shoppingCart_add = async (
+	token: string,
 	data: ShoppingCart
 ): Promise<any> => {
 	const add_response = await axios.post(
 		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/create_shoppingCart`,
-		data
+		data,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
 	);
 	return add_response;
 };
 
 export const patch_shoppingCart_update = async (
+	token: string,
 	data: ShoppingCart
 ): Promise<any> => {
 	const add_response = await axios.patch(
 		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/update_shoppingCart/${data._id}`,
-		data
+		data,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
 	);
 	return add_response;
 };
