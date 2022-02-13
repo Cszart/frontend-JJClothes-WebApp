@@ -21,6 +21,9 @@ export type Payment = {
 };
 
 export type Order = {
+	_id: string;
+	__v: number;
+
 	purchase_date: Date;
 	shipping_cost: number;
 	subtotal: number;

@@ -1,0 +1,36 @@
+import axios from 'axios';
+import { ShoppingCart } from 'interfaces';
+
+export const post_shoppingCart_add = async (
+	data: ShoppingCart
+): Promise<any> => {
+	const add_response = await axios.post(
+		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/create_shoppingCart`,
+		data
+	);
+	return add_response;
+};
+
+export const patch_shoppingCart_update = async (
+	data: ShoppingCart
+): Promise<any> => {
+	const add_response = await axios.patch(
+		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/update_shoppingCart/${data._id}`,
+		data
+	);
+	return add_response;
+};
+
+export const get_shoppingCart_all = async (): Promise<any> => {
+	const all_shoppingCart_response = await axios.get<ShoppingCart[]>(
+		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/get_all_shoppingCarts`
+	);
+	return all_shoppingCart_response;
+};
+
+export const get_shoppingCart_byID = async (id: string): Promise<any> => {
+	const shoppingCart_byID_response = await axios.get<ShoppingCart>(
+		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/get_shoppingCart_byID/${id}`
+	);
+	return shoppingCart_byID_response;
+};

@@ -11,5 +11,5 @@ export type ShoppingCart = {
 	items: Product_Item[];
 
 	__v: number;
-	__id: number;
+	_id: number;
 };
