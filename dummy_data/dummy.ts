@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Product } from 'interfaces';
+import { Product, ShoppingCart, User } from 'interfaces';
 
 export const dummy_products: Product[] = [
 	{
@@ -615,3 +615,43 @@ export const dummy_products: Product[] = [
 		__v: 0,
 	},
 ];
+
+export const dummy_shoppingCart: ShoppingCart = {
+	subtotal: 999,
+	items: [
+		{
+			quantity: 1,
+			product: dummy_products[1],
+			_id: '111',
+			__v: 111,
+		},
+		{
+			quantity: 2,
+			product: dummy_products[2],
+			_id: '222',
+			__v: 222,
+		},
+		{
+			quantity: 3,
+			product: dummy_products[3],
+			_id: '333',
+			__v: 333,
+		},
+	],
+	_id: '111S',
+	__v: 111,
+};
+
+export const dummy_user: User = {
+	firstname: 'Dummy',
+	lastname: 'User',
+	email: 'Dummy@user.com',
+	password: '123123',
+	rol: 'admin',
+
+	// Relations
+	shoppingCart: dummy_shoppingCart,
+
+	_id: '111U',
+	__v: 111,
+};

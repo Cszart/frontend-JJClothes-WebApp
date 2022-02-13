@@ -1,10 +1,15 @@
 import * as React from 'react';
+import clsx from 'clsx';
 
 // Interfaces
 import { Layout_Props } from 'interfaces';
-import clsx from 'clsx';
+
+// Local components
 import { Header } from 'components/header';
 import { Footer } from 'components/footer';
+import { ShoppingCart_Modal } from 'components/shopping_cart';
+
+import { dummy_shoppingCart } from 'dummy_data';
 
 export const Layout: React.FC<Layout_Props> = ({
 	children,
@@ -20,17 +25,32 @@ export const Layout: React.FC<Layout_Props> = ({
 	withFooter = false,
 	custom_footer_color,
 }) => {
+	const [show_shoppingCart, setShow_ShoppingCart] =
+		React.useState<boolean>(false);
+
 	if (isLoading) {
 		return <div className="isLoading">loading ...</div>;
 	}
 
 	return (
 		<div className="layout w-screen min-h-screen flex flex-col bg-zinc-101">
-			{withHeader && <Header custom_header_color={custom_header_color} />}
+			{withHeader && (
+				<Header
+					setShow_ShoppingCart={setShow_ShoppingCart}
+					custom_header_color={custom_header_color}
+				/>
+			)}
 
 			<div className={clsx('w-full', className)}>{children}</div>
 
 			{withFooter && <Footer custom_footer_color={custom_footer_color} />}
+
+			{/* Shopping cart modal */}
+			<ShoppingCart_Modal
+				isOpen={show_shoppingCart}
+				setIsOpen={setShow_ShoppingCart}
+				shoppingCart_data={dummy_shoppingCart}
+			/>
 		</div>
 	);
 };

@@ -5,19 +5,17 @@ import { get_products_all } from 'api';
 
 // Local components
 import { Layout } from 'components/layout';
+import { Items_Displayer } from 'components/items';
+import { Divider } from 'components/divider';
 import Home_banner from 'components/home/banner';
 
 // Interfaces
 import { Product } from 'interfaces';
-import { Items_Displayer } from 'components/items';
-import { Divider } from 'components/divider';
-
 // Headless ui
 import { Tab } from '@headlessui/react';
 
 // Antd
 import { Button } from 'antd';
-import { dummy_products } from 'dummy_data';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 const Home = () => {
@@ -51,19 +49,20 @@ const Home = () => {
 		}
 	};
 
+	// UseEffects
 	React.useEffect(() => {
 		console.log('<- Home, inf limit ->', inf_limit);
 		console.log('<- Home, sup limit ->', sup_limit);
 	}, [inf_limit, sup_limit]);
 
-	// UseEffects
 	React.useEffect(() => {
 		// GET all products
-		// get_products_all().then((response) => {
-		// 	setAll_Products(response.data);
-		// });
-		setAll_Products(dummy_products);
-		console.log('<- Home, products ->', dummy_products);
+		get_products_all().then((response) => {
+			setAll_Products(response.data);
+		});
+
+		// setAll_Products(dummy_products);
+		// console.log('<- Home, products ->', dummy_products);
 	}, []);
 
 	return (
@@ -162,7 +161,7 @@ const Home = () => {
 							orientation="horizontal"
 							products_list={all_products}
 							show_rows={show_rows}
-							className="justify-evenly gap-y-16 w-full mb-10"
+							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
 

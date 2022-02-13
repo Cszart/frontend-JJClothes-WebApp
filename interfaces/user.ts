@@ -7,7 +7,7 @@ export type User = {
 	lastname: string;
 	email: string;
 	password: string;
-	birth_date: Date;
+	birth_date?: Date;
 	rol: 'natural' | 'juridico' | 'admin';
 
 	// Relations

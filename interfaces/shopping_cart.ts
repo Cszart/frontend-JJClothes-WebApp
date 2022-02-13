@@ -7,9 +7,9 @@ export type ShoppingCart = {
 	subtotal: number;
 
 	// Relations
-	user: User;
+	user?: User;
 	items: Product_Item[];
 
 	__v: number;
-	_id: number;
+	_id: string;
 };

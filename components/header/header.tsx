@@ -15,10 +15,12 @@ import { Divider } from 'components/divider';
 
 interface Header_Props {
 	custom_header_color?: string;
+	setShow_ShoppingCart: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Header: React.FC<Header_Props> = ({
 	custom_header_color = '#F8EAFF',
+	setShow_ShoppingCart,
 }) => {
 	return (
 		<div
@@ -55,7 +57,12 @@ export const Header: React.FC<Header_Props> = ({
 			<div className="flex flex-wrap items-center gap-14">
 				<div className="icons flex justify-between gap-8">
 					<SearchOutlined className="w-6 h-6" />
-					<ShoppingOutlined className="w-6 h-6" />
+					<ShoppingOutlined
+						className="w-6 h-6"
+						onClick={() => {
+							setShow_ShoppingCart(true);
+						}}
+					/>
 					<UserOutlined className="w-6 h-6" />
 				</div>
 
