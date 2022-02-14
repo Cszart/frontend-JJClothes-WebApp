@@ -25,6 +25,12 @@
 	color: white;
 }
 
+.ant-btn:hover {
+	background: white;
+	color: var(--color-teal-501);
+	border: 1px solid var(--color-teal-501);
+}
+
 .ant-btn > span {
 	font-family: Taviraj, sans-serif;
 }

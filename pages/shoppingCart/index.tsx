@@ -18,7 +18,7 @@ export const ShoppingCart_Modal: React.FC<any> = () => {
 	const { subtotal, items } = dummy_shoppingCart;
 
 	return (
-		<Layout withHeader className="flex flex-col gap-7 px-[105px]">
+		<Layout withHeader className="layout flex flex-col gap-7 px-[105px]">
 			{/* First row */}
 			<div className="flex flex-row flex-wrap justify-evenly w-full">
 				{/* Shopping cart slang */}
