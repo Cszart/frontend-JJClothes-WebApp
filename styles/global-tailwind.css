@@ -42,7 +42,7 @@
 	border-radius: 8px;
 }
 
-/* Ghost */
+/* Button Ghost */
 /* Default */
 .ant-btn.ant-btn-background-ghost {
 	background-color: var(--color-zinc-101);
@@ -53,6 +53,13 @@
 /* For background on banner */
 .ant-btn.ant-btn-background-ghost.bg-orange-101 {
 	background-color: var(--color-orange-101);
+	border: 1px solid var(--color-teal-501);
+	color: var(--color-teal-501);
+}
+
+/* For background on shopping cart detail */
+.ant-btn.ant-btn-background-ghost.bg-white {
+	background-color: white;
 	border: 1px solid var(--color-teal-501);
 	color: var(--color-teal-501);
 }
@@ -73,6 +80,7 @@
 	border: 1px solid var(--color-purple-301);
 	color: white;
 }
+/* End button ghost */
 
 /* Input */
 /* Password */
