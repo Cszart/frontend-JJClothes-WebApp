@@ -24,7 +24,7 @@ const Register = () => {
 			<div className="w-1/2">
 				<img
 					src={Images.register_picture}
-					className="w-full h-full object-cover"
+					className="w-full max-h-[100vh] object-cover"
 				/>
 			</div>
 
@@ -37,9 +37,9 @@ const Register = () => {
 				/>
 
 				{/* text */}
-				<div className="text-modified pb-6">
+				<div className="text-modified w-[95%] pb-6">
 					<h3 className="text-base text-gray-800">Welcome</h3>
-					<h1 className="text-3xl text-gray-900 font-bold">
+					<h1 className="text-3xl text-gray-800 font-bold">
 						Register your new account
 					</h1>
 				</div>

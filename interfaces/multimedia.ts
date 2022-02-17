@@ -9,6 +9,7 @@ export enum Images {
 	register_picture = '/img/png/register_picture.png',
 	secondSection = '/img/png/SecondSection.png',
 	thirdSection = '/img/png/ThirdSection.png',
+	order_confirmed_picture = '/img/png/order_confirmed_picture.png',
 }
 
 export type Images_Types =
@@ -21,7 +22,8 @@ export type Images_Types =
 	| Images.logo_letters
 	| Images.register_picture
 	| Images.secondSection
-	| Images.thirdSection;
+	| Images.thirdSection
+	| Images.order_confirmed_picture;
 
 export enum Icons {
 	magnifying = '/img/svg/magnifying.svg',

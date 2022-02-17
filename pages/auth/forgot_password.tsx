@@ -34,7 +34,7 @@ const Forgot_password = () => {
 				/>
 
 				{/* text */}
-				<div className="text-modified pb-6">
+				<div className="text-modified  w-[95%] pb-6">
 					<h1 className="text-3xl text-gray-900 font-bold">
 						Forgot your password?
 					</h1>

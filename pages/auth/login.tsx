@@ -58,7 +58,7 @@ const Login = () => {
 						rules={[{ required: true, message: 'Please input your email!' }]}
 						className="mb-6"
 					>
-						<Input className="w-[95%] h-[50px]" />
+						<Input className="w-[95%] h-[50px] input-modified" />
 					</Form.Item>
 					{/* Password */}
 					<Form.Item
@@ -70,7 +70,7 @@ const Login = () => {
 						<Input.Password className="w-95-percent h-50px" />
 					</Form.Item>
 
-					<Form.Item className="w-full">
+					<Form.Item className="w-[95%]">
 						<Button
 							type="primary"
 							htmlType="submit"
@@ -83,7 +83,7 @@ const Login = () => {
 
 				{/* Forgot password */}
 				<Link href={'/auth/forgot_password'}>
-					<a className="text-sm text-blue-800 text-center mb-4">
+					<a className="text-sm text-blue-800 text-center mb-4 w-[95%]">
 						Forgot your password?
 					</a>
 				</Link>
@@ -92,7 +92,7 @@ const Login = () => {
 				<p className="text-base text-center mt-auto">
 					Don&apos;t have an acoount?{' '}
 					<Link href={'/auth/register'}>
-						<a className="font-medium text-blue-800">Join Free Today!</a>
+						<a className="font-medium text-blue-800 w-[95%]">Join Free Today!</a>
 					</Link>
 				</p>
 			</div>

@@ -7,7 +7,7 @@ interface Footer_Props {
 
 export const Footer: React.FC<Footer_Props> = ({
 	brands_logos = [],
-	custom_footer_color = '#DA5E42',
+	custom_footer_color = '#E2A9FD',
 }) => {
 	return (
 		<div
