@@ -21,7 +21,7 @@ export const patch_shoppingCart_update = async (
 	token: string,
 	data: ShoppingCart
 ): Promise<any> => {
-	const add_response = await axios.patch(
+	const patch_response = await axios.patch(
 		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/update_shoppingCart/${data._id}`,
 		data,
 		{
@@ -30,7 +30,24 @@ export const patch_shoppingCart_update = async (
 			},
 		}
 	);
-	return add_response;
+	return patch_response;
+};
+
+export const patch_shoppingCart_add_product = async (
+	token: string,
+	shoppingCart_id: string,
+	data: { quantity: number; product: string }
+): Promise<any> => {
+	const patch_response = await axios.patch(
+		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/add_product_shoppingCart/${shoppingCart_id}`,
+		data,
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	);
+	return patch_response;
 };
 
 export const get_shoppingCart_all = async (): Promise<any> => {

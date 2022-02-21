@@ -22,3 +22,10 @@ export const get_tags_byID = async (id: string): Promise<any> => {
 	);
 	return tag_byID_response;
 };
+
+export const get_tags_Name = async (name: string): Promise<any> => {
+	const tag_byName_response = await axios.get<Tags>(
+		`${process.env.NEXT_PUBLIC_API_URL}/tag/get_tag_byName/${name}`
+	);
+	return tag_byName_response;
+};

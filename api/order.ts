@@ -30,3 +30,13 @@ export const get_order_byID = async (id: string): Promise<any> => {
 	);
 	return order_byID_response;
 };
+
+export const get_order_byDateRange = async (
+	startDate: string,
+	endDate: string
+): Promise<any> => {
+	const order_byRange_response = await axios.get<Order>(
+		`${process.env.NEXT_PUBLIC_API_URL}/order/get_order_byDateRange/${startDate}/${endDate}`
+	);
+	return order_byRange_response;
+};
