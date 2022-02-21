@@ -4,12 +4,15 @@ import { Divider } from 'components/divider';
 import { Button } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export interface Home_banner_props {
 	product: Product;
 }
 
 const Home_banner: React.FC<Home_banner_props> = ({ product }) => {
+	const router = useRouter();
 	return (
 		<div
 			className={clsx(
@@ -20,7 +23,7 @@ const Home_banner: React.FC<Home_banner_props> = ({ product }) => {
 			{/* Imagen */}
 			<div className="relative flex justify-center w-1/2">
 				<img
-					src={product.gallery[3]}
+					src={product.gallery[4]}
 					className={clsx(
 						'absolute xl:top-[10%] 2xl:top-0',
 						'w-[300px] h-[400px] lg:w-[324px] lg:h-[466px] xl:w-[348px] xl:h-[532px] 2xl:w-[396px] 2xl:h-[600px]'
@@ -62,12 +65,14 @@ const Home_banner: React.FC<Home_banner_props> = ({ product }) => {
 						Add to Cart
 					</Button>
 
-					<Button
-						ghost
-						className="text-xl text-bold text-center bg-orange-101 px-9"
-					>
-						Details
-					</Button>
+					<Link href={`/product?product_id=${product._id}`}>
+						<Button
+							ghost
+							className="text-xl text-bold text-center bg-orange-101 px-9"
+						>
+							Details
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</div>

@@ -1,7 +1,11 @@
 import * as React from 'react';
 
 // API
-import { get_products_all } from 'api';
+import {
+	get_products_all,
+	get_products_byCategory,
+	get_products_new,
+} from 'api';
 
 // Local components
 import { Layout } from 'components/layout';
@@ -10,7 +14,8 @@ import { Divider } from 'components/divider';
 import Home_banner from 'components/home/banner';
 
 // Interfaces
-import { Product } from 'interfaces';
+import { Category_Values, Product } from 'interfaces';
+
 // Headless ui
 import { Tab } from '@headlessui/react';
 
@@ -19,7 +24,11 @@ import { Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 const Home = () => {
+	// Data
 	const [all_products, setAll_Products] = React.useState<Product[]>([]);
+	const [new_products, setNew_Products] = React.useState<Product[]>([]);
+	const [women_products, setWomen_Products] = React.useState<Product[]>([]);
+	const [men_products, setMen_Products] = React.useState<Product[]>([]);
 
 	// Show Rows on tabs
 	const [show_rows, setShow_Rows] = React.useState<number>(1);
@@ -29,8 +38,9 @@ const Home = () => {
 	const [sup_limit, setSup_limit] = React.useState<number>(3);
 
 	// Utils
+	// Next carousel
 	const next_carousel = () => {
-		if (sup_limit + 3 <= all_products.length) {
+		if (sup_limit + 3 <= new_products.length) {
 			setInf_limit(inf_limit + 3);
 			setSup_limit(sup_limit + 3);
 		} else {
@@ -38,31 +48,39 @@ const Home = () => {
 			setSup_limit(3);
 		}
 	};
-
+	// Back carousel
 	const back_carousel = () => {
 		if (inf_limit - 3 >= 0) {
 			setInf_limit(inf_limit - 3);
 			setSup_limit(sup_limit - 3);
 		} else {
-			setInf_limit(all_products.length - 3);
-			setSup_limit(all_products.length);
+			setInf_limit(new_products.length - 3);
+			setSup_limit(new_products.length);
 		}
 	};
 
 	// UseEffects
+	// When loading
 	React.useEffect(() => {
-		console.log('<- Home, inf limit ->', inf_limit);
-		console.log('<- Home, sup limit ->', sup_limit);
-	}, [inf_limit, sup_limit]);
-
-	React.useEffect(() => {
-		// GET all products
+		// Get all products
 		get_products_all().then((response) => {
 			setAll_Products(response.data);
 		});
 
-		// setAll_Products(dummy_products);
-		// console.log('<- Home, products ->', dummy_products);
+		// Get new products
+		get_products_new().then((response) => {
+			setNew_Products(response.data);
+		});
+
+		// Get women products
+		get_products_byCategory(Category_Values.WOMEN).then((response) => {
+			setWomen_Products(response.data);
+		});
+
+		// Get men products
+		get_products_byCategory(Category_Values.MEN).then((response) => {
+			setMen_Products(response.data);
+		});
 	}, []);
 
 	return (
@@ -72,7 +90,7 @@ const Home = () => {
 			className="layout flex flex-col items-center px-[100px]"
 		>
 			{/* Banner highlight */}
-			{all_products.length > 0 && <Home_banner product={all_products[0]} />}
+			{new_products.length > 0 && <Home_banner product={new_products[0]} />}
 
 			{/* Best Seller */}
 			<Items_Displayer
@@ -146,7 +164,7 @@ const Home = () => {
 					{/* All content */}
 					<Tab.Panel>
 						<Items_Displayer
-							product_type="type1"
+							product_type="type2"
 							orientation="horizontal"
 							products_list={all_products}
 							show_rows={show_rows}
@@ -159,7 +177,7 @@ const Home = () => {
 						<Items_Displayer
 							product_type="type2"
 							orientation="horizontal"
-							products_list={all_products}
+							products_list={new_products}
 							show_rows={show_rows}
 							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
@@ -168,15 +186,22 @@ const Home = () => {
 					{/* Women content */}
 					<Tab.Panel>
 						<Items_Displayer
-							product_type="type3"
+							product_type="type2"
 							orientation="horizontal"
-							products_list={all_products.slice(0, 3)}
-							className="w-full mb-10"
+							products_list={women_products}
+							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
 
 					{/* Men content */}
-					<Tab.Panel>Content 4</Tab.Panel>
+					<Tab.Panel>
+						<Items_Displayer
+							product_type="type2"
+							orientation="horizontal"
+							products_list={men_products}
+							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
+						/>
+					</Tab.Panel>
 				</Tab.Panels>
 			</Tab.Group>
 
@@ -222,7 +247,7 @@ const Home = () => {
 					<Items_Displayer
 						product_type="type3"
 						orientation="horizontal"
-						products_list={all_products.slice(inf_limit, sup_limit)}
+						products_list={new_products.slice(inf_limit, sup_limit)}
 						className="justify-evenly w-full"
 					/>
 

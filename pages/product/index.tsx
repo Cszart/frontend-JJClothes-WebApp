@@ -23,9 +23,16 @@ import {
 } from '@ant-design/icons';
 import { dummy_products } from 'dummy_data';
 import { Items_Displayer } from 'components/items';
+import { get_products_byID } from 'api';
+import { useRouter } from 'next/router';
 
 const Product_Detail = () => {
+	const router = useRouter();
+
+	// Data
 	const [product, setProduct] = React.useState<Product>();
+
+	// Utils
 	const [current_photo, setCurrent_Photo] = React.useState<string>();
 	const [current_discount, setCurrent_Discount] = React.useState<number>(0);
 	const [current_quantity, setCurrent_Quantity] = React.useState<number>(1);
@@ -33,9 +40,13 @@ const Product_Detail = () => {
 	// UseEffects
 	// GET and SET product details
 	React.useEffect(() => {
-		setProduct(dummy_products[0]);
-		console.log('<- Detail, product ->', dummy_products[0]);
-	}, []);
+		if (router.query.product_id) {
+			get_products_byID(router.query.product_id as string).then((response) => {
+				console.log('<- Detail, product ->', response);
+				setProduct(response.data);
+			});
+		}
+	}, [router]);
 
 	// SET current photo
 	React.useEffect(() => {
@@ -72,7 +83,7 @@ const Product_Detail = () => {
 					</Breadcrumb.Item>
 
 					<Breadcrumb.Item>
-						<a href="#"> Category - change </a>
+						<a href="#"> {product?.category.name} </a>
 					</Breadcrumb.Item>
 
 					<Breadcrumb.Item>

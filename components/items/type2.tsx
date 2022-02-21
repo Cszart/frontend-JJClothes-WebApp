@@ -56,7 +56,11 @@ export const Item_type_2: React.FC<Item_Props> = ({
 
 			{/* price */}
 			<h3 className="text-xl font-medium text-gray-701 mb-6">
-				{`${product_item.price - discount_amount} $`}
+				{`${
+					Math.round(
+						(product_item.price - discount_amount + Number.EPSILON) * 100
+					) / 100
+				} $`}
 			</h3>
 
 			{/* add to cart */}
@@ -68,7 +72,7 @@ export const Item_type_2: React.FC<Item_Props> = ({
 					'text-white font-taviraj text-center text-base',
 					'mt-auto',
 					{ 'bg-purple-301': product_item.new_item },
-					{ 'bg-esmerald-201': product_item.discount }
+					{ 'bg-esmerald-201': !product_item.new_item }
 				)}
 			>
 				Add to cart

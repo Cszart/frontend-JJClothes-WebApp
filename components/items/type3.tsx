@@ -44,7 +44,11 @@ export const Item_type_3: React.FC<Item_Props> = ({
 
 				{/* price */}
 				<h3 className="text-xl font-medium text-gray-701 mb-6">
-					{`${product_item.price - discount_amount} $`}
+					{`${
+						Math.round(
+							(product_item.price - discount_amount + Number.EPSILON) * 100
+						) / 100
+					} $`}
 				</h3>
 			</div>
 		</div>
