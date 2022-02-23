@@ -3,6 +3,8 @@ import { Layout } from 'components/layout';
 import { Form, Input, Button } from 'antd';
 import { Divider } from 'components/divider';
 import Link from 'next/link';
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 
 const PaymentBilling = () => {
 	const [form] = Form.useForm();
@@ -197,6 +199,23 @@ const PaymentBilling = () => {
 			</div>
 		</Layout>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+
+	if (session && session.user) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: { session },
+	};
 };
 
 export default PaymentBilling;

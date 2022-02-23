@@ -13,6 +13,8 @@ import { Button } from 'antd';
 import { Layout } from 'components/layout';
 import { ShoppingCart_Item } from 'components/shopping_cart';
 import Link from 'next/link';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
 export const ShoppingCart_Modal: React.FC<any> = () => {
 	const { subtotal, items } = dummy_shoppingCart;
@@ -117,6 +119,23 @@ export const ShoppingCart_Modal: React.FC<any> = () => {
 			</div>
 		</Layout>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+
+	if (session && session.user) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: { session },
+	};
 };
 
 export default ShoppingCart_Modal;

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
+import { getSession, signIn } from 'next-auth/react';
+import { useToasts } from 'react-toast-notifications';
 
 // Local components
 import { Layout } from 'components/layout';
@@ -11,12 +13,24 @@ import { Images } from 'interfaces';
 // Antd library
 import { Button, Form, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { GetServerSideProps } from 'next';
 
-const Login = () => {
+const SignIn = () => {
 	const [form] = Form.useForm();
+	const { addToast } = useToasts();
 
-	const onFinish = (values: any) => {
-		console.log('Success:', values);
+	const onFinish = async (values: any) => {
+		try {
+			const response = await signIn('credentials', {
+				redirect: true,
+				email: values.email,
+				password: values.password,
+				callbackUrl: '/',
+			});
+			console.log('-- Log in page, sign In response --', response);
+		} catch (error) {
+			addToast('An error ocurred', { appearance: 'error' });
+		}
 	};
 
 	return (
@@ -53,6 +67,7 @@ const Login = () => {
 				>
 					{/* Email */}
 					<Form.Item
+						key={'email'}
 						name="email"
 						label="Email"
 						rules={[{ required: true, message: 'Please input your email!' }]}
@@ -62,6 +77,7 @@ const Login = () => {
 					</Form.Item>
 					{/* Password */}
 					<Form.Item
+						key={'password'}
 						name="password"
 						label="Password"
 						rules={[{ required: true, message: 'Please input your password' }]}
@@ -70,7 +86,7 @@ const Login = () => {
 						<Input.Password className="w-95-percent h-50px" />
 					</Form.Item>
 
-					<Form.Item className="w-[95%]">
+					<Form.Item key={'loginbutton'} className="w-[95%]">
 						<Button
 							type="primary"
 							htmlType="submit"
@@ -92,7 +108,9 @@ const Login = () => {
 				<p className="text-base text-center mt-auto">
 					Don&apos;t have an acoount?{' '}
 					<Link href={'/auth/register'}>
-						<a className="font-medium text-blue-800 w-[95%]">Join Free Today!</a>
+						<a className="font-medium text-blue-800 w-[95%]">
+							Join Free Today!
+						</a>
 					</Link>
 				</p>
 			</div>
@@ -100,4 +118,21 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+
+	if (session && session.user) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: { session },
+	};
+};
+
+export default SignIn;

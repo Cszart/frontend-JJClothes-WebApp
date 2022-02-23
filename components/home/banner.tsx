@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { Images, Product } from 'interfaces';
-import { Divider } from 'components/divider';
-import { Button } from 'antd';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+
+// local components
+import { Divider } from 'components/divider';
+
+// interfaces
+import { Images, Product } from 'interfaces';
+
+// antd
+import { Button } from 'antd';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 
 export interface Home_banner_props {
 	product: Product;
 }
 
 const Home_banner: React.FC<Home_banner_props> = ({ product }) => {
-	const router = useRouter();
 	return (
 		<div
 			className={clsx(
 				'banner flex justify-between w-full bg-orange-101 rounded-lg',
-				'mb-28 xl:mb-36 2xl:mb-48 pr-28 py-8'
+				'mb-28 xl:mb-36 2xl:mb-72 pr-28 py-8'
 			)}
 		>
 			{/* Imagen */}

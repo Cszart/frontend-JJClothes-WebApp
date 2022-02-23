@@ -1,12 +1,15 @@
 import * as React from 'react';
+import clsx from 'clsx';
 import Router from 'next/router';
 
 // Local component
-import { Layout } from 'components/layout'; // Local components
-import { Images } from 'interfaces'; // Interfaces
-import { Button, Form, Input } from 'antd'; // Antd
-import clsx from 'clsx';
+import { Layout } from 'components/layout';
+import { Images } from 'interfaces';
+
+import { Button, Form, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
 const Forgot_password = () => {
 	const [form] = Form.useForm();
@@ -71,6 +74,23 @@ const Forgot_password = () => {
 			</div>
 		</Layout>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+
+	if (session && session.user) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: { session },
+	};
 };
 
 export default Forgot_password;

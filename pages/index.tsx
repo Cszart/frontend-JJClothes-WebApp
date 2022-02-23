@@ -22,8 +22,10 @@ import { Tab } from '@headlessui/react';
 // Antd
 import { Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { GetServerSideProps } from 'next';
+import { getSession, useSession } from 'next-auth/react';
 
-const Home = () => {
+const Home: React.FC<any> = ({ session }) => {
 	// Data
 	const [all_products, setAll_Products] = React.useState<Product[]>([]);
 	const [new_products, setNew_Products] = React.useState<Product[]>([]);
@@ -81,6 +83,8 @@ const Home = () => {
 		get_products_byCategory(Category_Values.MEN).then((response) => {
 			setMen_Products(response.data);
 		});
+
+		console.log('-- HOME page, session --', session);
 	}, []);
 
 	return (
@@ -262,6 +266,13 @@ const Home = () => {
 			</div>
 		</Layout>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	return {
+		props: { session },
+	};
 };
 
 export default Home;

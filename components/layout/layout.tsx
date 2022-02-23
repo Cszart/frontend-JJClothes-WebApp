@@ -10,6 +10,8 @@ import { Footer } from 'components/footer';
 import { ShoppingCart_Modal } from 'components/shopping_cart';
 
 import { dummy_shoppingCart } from 'dummy_data';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
 export const Layout: React.FC<Layout_Props> = ({
 	children,
@@ -54,24 +56,5 @@ export const Layout: React.FC<Layout_Props> = ({
 		</div>
 	);
 };
-
-/*
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const session = await getSession(context);
-	const token = session?.accessToken as string;
-
-	if (!session) {
-		return {
-			redirect: {
-				destination: '/auth/signin',
-				permanent: false,
-			},
-		};
-	}
-	return {
-		props: { session, equalizers, pageSectionsEquializers },
-	};
-};
-*/
 
 export default Layout;

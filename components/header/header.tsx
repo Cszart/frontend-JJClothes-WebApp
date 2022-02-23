@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Images } from 'interfaces';
 
 // Antd library
-import { Button } from 'antd';
 import {
 	SearchOutlined,
 	ShoppingOutlined,
@@ -66,13 +65,10 @@ export const Header: React.FC<Header_Props> = ({
 					<UserOutlined className="w-6 h-6" />
 				</div>
 
-				<Link href={'/auth/login'}>
-					<Button
-						type="primary"
-						className="w-[100px] h-[50px] text-xl font-bold px-4 py-3"
-					>
+				<Link href={'/auth/signin'}>
+					<button className="bg-black w-[100px] h-[50px] text-xl font-bold text-white rounded-lg px-4 py-3">
 						Log in
-					</Button>
+					</button>
 				</Link>
 			</div>
 		</div>

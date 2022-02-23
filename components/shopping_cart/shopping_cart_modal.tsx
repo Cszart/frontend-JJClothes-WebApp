@@ -70,13 +70,13 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 							{/* Items */}
 							{items.map((product_item: Product_Item, key: number) => {
 								return (
-									<>
-										<ShoppingCart_Item key={key} {...product_item} />
+									<div key={key} className="w-full">
+										<ShoppingCart_Item {...product_item} />
 										<Divider
 											className="self-center w-[1020px]"
 											custom_divider_color="#000000"
 										/>
-									</>
+									</div>
 								);
 							})}
 
