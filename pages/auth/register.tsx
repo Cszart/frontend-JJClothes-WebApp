@@ -2,7 +2,6 @@ import * as React from 'react';
 import Router from 'next/router';
 
 // Local components
-import { Layout } from 'components/layout';
 
 // Interfaces
 import { Images } from 'interfaces';
@@ -21,7 +20,7 @@ const Register = () => {
 	};
 
 	return (
-		<Layout className="flex flex-row">
+		<div className="flex flex-row">
 			{/* Side image halfscreen */}
 			<div className="w-1/2">
 				<img
@@ -125,7 +124,7 @@ const Register = () => {
 					</Form.Item>
 				</Form>
 			</div>
-		</Layout>
+		</div>
 	);
 };
 

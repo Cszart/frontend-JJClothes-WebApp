@@ -2,17 +2,21 @@ import * as React from 'react';
 import { Layout } from 'components/layout';
 import { Form, Button } from 'antd';
 import { Divider } from 'components/divider';
-import { Images } from 'interfaces';
+import { Images, User } from 'interfaces';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 
-const PaymentBilling = () => {
+interface PaymentConfirmation_Props {
+	user: User;
+}
+
+const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({ user }) => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [form] = Form.useForm();
 
 	return (
-		<Layout withHeader withFooter className="flex flex-row">
+		<Layout withHeader withFooter user={user} className="flex flex-row">
 			{/*Left side*/}
 			<div className="flex flex-col w-1/2 p-10">
 				<div className="flex flex-col items-center justify-center bg-white p-10">
@@ -90,7 +94,7 @@ const PaymentBilling = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 
-	if (session && session.user) {
+	if (session == null) {
 		return {
 			redirect: {
 				destination: '/',
@@ -99,9 +103,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		};
 	}
 
+	if (session) {
+		const user = session.userData;
+
+		return {
+			props: { session, user },
+		};
+	}
+
 	return {
 		props: { session },
 	};
 };
 
-export default PaymentBilling;
+export default PaymentConfirmation;

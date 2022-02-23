@@ -25,15 +25,17 @@ const Home_banner: React.FC<Home_banner_props> = ({ product }) => {
 			)}
 		>
 			{/* Imagen */}
-			<div className="relative flex justify-center w-1/2">
-				<img
-					src={product.gallery[4]}
-					className={clsx(
-						'absolute xl:top-[10%] 2xl:top-0',
-						'w-[300px] h-[400px] lg:w-[324px] lg:h-[466px] xl:w-[348px] xl:h-[532px] 2xl:w-[396px] 2xl:h-[600px]'
-					)}
-				/>
-			</div>
+			<Link href={`/product?product_id=${product._id}`}>
+				<div className="relative flex justify-center w-1/2">
+					<img
+						src={product.gallery[4]}
+						className={clsx(
+							'absolute xl:top-[10%] 2xl:top-0',
+							'w-[300px] h-[400px] lg:w-[324px] lg:h-[466px] xl:w-[348px] xl:h-[532px] 2xl:w-[396px] 2xl:h-[600px]'
+						)}
+					/>
+				</div>
+			</Link>
 
 			{/* Text info */}
 			<div className="relative flex flex-col w-1/2">

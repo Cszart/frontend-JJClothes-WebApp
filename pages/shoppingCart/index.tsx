@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { dummy_shoppingCart } from 'dummy_data';
 
 // Interfaces
-import { Images, Product_Item } from 'interfaces';
+import { Images, Product_Item, User } from 'interfaces';
 
 // Local component
 import { Divider } from 'components/divider';
@@ -16,11 +16,20 @@ import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 
-export const ShoppingCart_Modal: React.FC<any> = () => {
+interface ShoppingCart_Modal_Props {
+	user: User;
+}
+export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
+	user,
+}) => {
 	const { subtotal, items } = dummy_shoppingCart;
 
 	return (
-		<Layout withHeader className="layout flex flex-col gap-7 px-[105px]">
+		<Layout
+			withHeader
+			user={user}
+			className="layout flex flex-col gap-7 px-[105px]"
+		>
 			{/* First row */}
 			<div className="flex flex-row flex-wrap justify-evenly w-full">
 				{/* Shopping cart slang */}
@@ -124,12 +133,20 @@ export const ShoppingCart_Modal: React.FC<any> = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 
-	if (session && session.user) {
+	if (session == null) {
 		return {
 			redirect: {
 				destination: '/',
 				permanent: false,
 			},
+		};
+	}
+
+	if (session) {
+		const user = session.userData;
+
+		return {
+			props: { session, user },
 		};
 	}
 

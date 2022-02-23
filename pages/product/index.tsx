@@ -9,7 +9,7 @@ import { Layout } from 'components/layout';
 import { Divider } from 'components/divider';
 
 // Interfaces
-import { Product, Tags } from 'interfaces';
+import { Product, Tags, User } from 'interfaces';
 
 // Headless ui
 import { Tab } from '@headlessui/react';
@@ -25,8 +25,13 @@ import { dummy_products } from 'dummy_data';
 import { Items_Displayer } from 'components/items';
 import { get_products_byID } from 'api';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
-const Product_Detail = () => {
+interface Product_Detail_Props {
+	user: User;
+}
+const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 	const router = useRouter();
 
 	// Data
@@ -68,7 +73,7 @@ const Product_Detail = () => {
 	}, [product]);
 
 	return (
-		<Layout withHeader className="layout flex flex-col">
+		<Layout withHeader user={user} className="layout flex flex-col">
 			{/* Breadcrumbs */}
 			<div className="w-full px-[165px] mb-10">
 				<Breadcrumb>
@@ -288,6 +293,22 @@ const Product_Detail = () => {
 			/>
 		</Layout>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+
+	if (session) {
+		const user = session.userData;
+
+		return {
+			props: { session, user },
+		};
+	}
+
+	return {
+		props: { session },
+	};
 };
 
 export default Product_Detail;

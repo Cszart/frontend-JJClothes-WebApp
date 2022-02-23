@@ -23,9 +23,9 @@ import { Tab } from '@headlessui/react';
 import { Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { GetServerSideProps } from 'next';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
-const Home: React.FC<any> = ({ session }) => {
+const Home: React.FC<any> = ({ session, user }) => {
 	// Data
 	const [all_products, setAll_Products] = React.useState<Product[]>([]);
 	const [new_products, setNew_Products] = React.useState<Product[]>([]);
@@ -91,6 +91,8 @@ const Home: React.FC<any> = ({ session }) => {
 		<Layout
 			withHeader
 			withFooter
+			session={session}
+			user={user}
 			className="layout flex flex-col items-center px-[100px]"
 		>
 			{/* Banner highlight */}
@@ -270,6 +272,15 @@ const Home: React.FC<any> = ({ session }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+
+	if (session) {
+		const user = session.userData;
+
+		return {
+			props: { session, user },
+		};
+	}
+
 	return {
 		props: { session },
 	};

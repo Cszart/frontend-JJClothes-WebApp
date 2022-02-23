@@ -10,14 +10,15 @@ import { Footer } from 'components/footer';
 import { ShoppingCart_Modal } from 'components/shopping_cart';
 
 import { dummy_shoppingCart } from 'dummy_data';
-import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { get_shoppingCart_byID } from 'api';
+
+import { useQuery } from 'react-query';
 
 export const Layout: React.FC<Layout_Props> = ({
 	children,
 
 	className,
-	isLoading,
+	isLoading = false,
 
 	// Header
 	withHeader = false,
@@ -26,10 +27,31 @@ export const Layout: React.FC<Layout_Props> = ({
 	// Footer
 	withFooter = false,
 	custom_footer_color,
+
+	// session
+	session,
+	user,
 }) => {
+	// Show / Hide shopping cart modal
 	const [show_shoppingCart, setShow_ShoppingCart] =
 		React.useState<boolean>(false);
 
+	// Get shopping cart info
+	const { data: shoppingCart_data, isFetching: shoppingCart_isLoading } =
+		useQuery(['Shopping_Cart', session?.userData, user], () =>
+			get_shoppingCart_byID(user.shoppingCart._id)
+		);
+
+	// UseEffects
+	React.useEffect(() => {
+		console.log(
+			'-- LAYOUT, shopping cart data --',
+			shoppingCart_data,
+			shoppingCart_isLoading
+		);
+	}, [shoppingCart_data]);
+
+	// If is loading then return loading
 	if (isLoading) {
 		return <div className="isLoading">loading ...</div>;
 	}

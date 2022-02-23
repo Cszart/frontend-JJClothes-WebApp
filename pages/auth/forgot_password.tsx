@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import Router from 'next/router';
 
 // Local component
-import { Layout } from 'components/layout';
 import { Images } from 'interfaces';
 
 import { Button, Form, Input } from 'antd';
@@ -19,7 +18,7 @@ const Forgot_password = () => {
 	};
 
 	return (
-		<Layout className="flex flex-row">
+		<div className="flex flex-row">
 			{/* Side image halfscreen */}
 			<div className="w-1/2 h-[100vh]">
 				<img
@@ -72,7 +71,7 @@ const Forgot_password = () => {
 					</Form.Item>
 				</Form>
 			</div>
-		</Layout>
+		</div>
 	);
 };
 

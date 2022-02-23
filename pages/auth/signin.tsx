@@ -5,7 +5,6 @@ import { getSession, signIn } from 'next-auth/react';
 import { useToasts } from 'react-toast-notifications';
 
 // Local components
-import { Layout } from 'components/layout';
 
 // Interfaces
 import { Images } from 'interfaces';
@@ -34,7 +33,7 @@ const SignIn = () => {
 	};
 
 	return (
-		<Layout className="flex flex-row">
+		<div className="flex flex-row">
 			{/* Side image halfscreen */}
 			<div className="w-1/2">
 				<img
@@ -114,7 +113,7 @@ const SignIn = () => {
 					</Link>
 				</p>
 			</div>
-		</Layout>
+		</div>
 	);
 };
 

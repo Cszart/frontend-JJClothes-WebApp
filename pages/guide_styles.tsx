@@ -9,13 +9,20 @@ import { dummy_products, dummy_shoppingCart } from 'dummy_data';
 import ShoppingCart_Item from 'components/shopping_cart/shopping_cart_item';
 import { Button } from 'antd';
 import ShoppingCart_Modal from 'components/shopping_cart/shopping_cart_modal';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
-const Guide_Styles = () => {
+const Guide_Styles: React.FC<any> = ({ user }) => {
 	const [show_shoppingCart, setShow_ShoppingCart] =
 		React.useState<boolean>(false);
 
 	return (
-		<Layout withHeader withFooter className="bg-orange-100 px-[100px]">
+		<Layout
+			withHeader
+			withFooter
+			user={user}
+			className="bg-orange-100 px-[100px]"
+		>
 			{/* Items */}
 			<h1 className="text-2xl font-bold bg-black text-white mb-8">
 				Items type 1
@@ -95,6 +102,22 @@ const Guide_Styles = () => {
 			/>
 		</Layout>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+
+	if (session) {
+		const user = session.userData;
+
+		return {
+			props: { session, user },
+		};
+	}
+
+	return {
+		props: { session },
+	};
 };
 
 export default Guide_Styles;

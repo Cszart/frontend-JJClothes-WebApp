@@ -5,13 +5,17 @@ import { Divider } from 'components/divider';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import { User } from 'interfaces';
 
-const PaymentBilling = () => {
+interface PaymentPage_Props {
+	user: User;
+}
+const PaymentPage: React.FC<PaymentPage_Props> = ({ user }) => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [form] = Form.useForm();
 
 	return (
-		<Layout withHeader withFooter className="flex flex-col">
+		<Layout withHeader withFooter user={user} className="flex flex-col">
 			<div className="flex flex-row">
 				{/*Left side*/}
 				<div className="w-1/2 p-10 flex flex-col">
@@ -152,7 +156,7 @@ const PaymentBilling = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 
-	if (session && session.user) {
+	if (session == null) {
 		return {
 			redirect: {
 				destination: '/',
@@ -161,9 +165,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		};
 	}
 
+	if (session) {
+		const user = session.userData;
+
+		return {
+			props: { session, user },
+		};
+	}
+
 	return {
 		props: { session },
 	};
 };
 
-export default PaymentBilling;
+export default PaymentPage;
