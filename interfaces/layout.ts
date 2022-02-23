@@ -15,5 +15,5 @@ export interface Layout_Props {
 
 	// Actual session
 	session?: Session | null;
-	user: User;
+	user?: User;
 }

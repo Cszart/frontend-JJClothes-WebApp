@@ -1,26 +1,38 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
+import clsx from 'clsx';
 
 // Interfaces
-import { Images } from 'interfaces';
+import { Images, User } from 'interfaces';
 
 // Antd library
-import {
-	SearchOutlined,
-	ShoppingOutlined,
-	UserOutlined,
-} from '@ant-design/icons';
+import { ShoppingOutlined } from '@ant-design/icons';
+import { Badge, Input } from 'antd';
+
 import { Divider } from 'components/divider';
+
+const { Search } = Input;
 
 interface Header_Props {
 	custom_header_color?: string;
 	setShow_ShoppingCart: React.Dispatch<React.SetStateAction<boolean>>;
+
+	shoppinCart_items_count?: number;
+	user?: User;
 }
 
 export const Header: React.FC<Header_Props> = ({
 	custom_header_color = '#F8EAFF',
 	setShow_ShoppingCart,
+
+	user,
+	shoppinCart_items_count = 0,
 }) => {
+	const onSearch = (searchValue: string) => {
+		console.log('-- HEADER , search input value -- ', searchValue);
+	};
+
 	return (
 		<div
 			className="header flex flex-wrap justify-between items-center sticky top-0 z-50 w-full mb-14 px-25"
@@ -53,23 +65,51 @@ export const Header: React.FC<Header_Props> = ({
 			</div>
 
 			{/* Icons and button */}
-			<div className="flex flex-wrap items-center gap-14">
-				<div className="icons flex justify-between gap-8">
-					<SearchOutlined className="w-6 h-6" />
-					<ShoppingOutlined
-						className="w-6 h-6"
-						onClick={() => {
-							setShow_ShoppingCart(true);
-						}}
-					/>
-					<UserOutlined className="w-6 h-6" />
+			<div
+				className={clsx(
+					'flex flex-wrap items-center',
+					{ 'gap-14': !user },
+					{ 'gap-4': user }
+				)}
+			>
+				<div className="flex flex-wrap gap-4">
+					<Search placeholder="Search" onSearch={onSearch} />
+
+					<Badge count={shoppinCart_items_count} overflowCount={8}>
+						<ShoppingOutlined
+							className="w-6 h-6"
+							onClick={() => {
+								setShow_ShoppingCart(true);
+							}}
+						/>
+					</Badge>
 				</div>
 
-				<Link href={'/auth/signin'}>
-					<button className="bg-black w-[100px] h-[50px] text-xl font-bold text-white rounded-lg px-4 py-3">
-						Log in
+				{!user && (
+					<Link href={'/auth/signin'}>
+						<button
+							className={clsx(
+								'bg-black rounded-lg',
+								'text-lg font-bold text-white',
+								'w-[100px] h-[50px] px-4 py-3'
+							)}
+						>
+							Log in
+						</button>
+					</Link>
+				)}
+
+				{user && (
+					<button
+						onClick={() => signOut({ callbackUrl: '/' })}
+						className={clsx(
+							'text-lg font-semibold text-gray-800',
+							'rounded-lg px-4 py-3'
+						)}
+					>
+						Log out
 					</button>
-				</Link>
+				)}
 			</div>
 		</div>
 	);

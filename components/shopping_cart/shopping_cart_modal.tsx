@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Product, Product_Item, ShoppingCart } from 'interfaces';
+import { Product_Item, ShoppingCart } from 'interfaces';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import clsx from 'clsx';

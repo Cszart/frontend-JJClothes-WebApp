@@ -57,9 +57,15 @@ export const get_shoppingCart_all = async (): Promise<any> => {
 	return all_shoppingCart_response;
 };
 
-export const get_shoppingCart_byID = async (id: string): Promise<any> => {
-	const shoppingCart_byID_response = await axios.get<ShoppingCart>(
-		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/get_shoppingCart_byID/${id}`
-	);
-	return shoppingCart_byID_response.data;
+export const get_shoppingCart_byID = async (
+	id: string | undefined
+): Promise<ShoppingCart | undefined> => {
+	if (id != undefined) {
+		const shoppingCart_byID_response = await axios.get<ShoppingCart>(
+			`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/get_shoppingCart_byID/${id}`
+		);
+		return shoppingCart_byID_response.data;
+	} else {
+		undefined;
+	}
 };

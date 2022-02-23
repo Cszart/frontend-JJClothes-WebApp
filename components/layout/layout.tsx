@@ -9,7 +9,6 @@ import { Header } from 'components/header';
 import { Footer } from 'components/footer';
 import { ShoppingCart_Modal } from 'components/shopping_cart';
 
-import { dummy_shoppingCart } from 'dummy_data';
 import { get_shoppingCart_byID } from 'api';
 
 import { useQuery } from 'react-query';
@@ -39,7 +38,7 @@ export const Layout: React.FC<Layout_Props> = ({
 	// Get shopping cart info
 	const { data: shoppingCart_data, isFetching: shoppingCart_isLoading } =
 		useQuery(['Shopping_Cart', session?.userData, user], () =>
-			get_shoppingCart_byID(user.shoppingCart._id)
+			get_shoppingCart_byID(user?.shoppingCart._id)
 		);
 
 	// UseEffects
@@ -62,6 +61,8 @@ export const Layout: React.FC<Layout_Props> = ({
 				<Header
 					setShow_ShoppingCart={setShow_ShoppingCart}
 					custom_header_color={custom_header_color}
+					user={user}
+					shoppinCart_items_count={shoppingCart_data?.items.length}
 				/>
 			)}
 
@@ -70,11 +71,13 @@ export const Layout: React.FC<Layout_Props> = ({
 			{withFooter && <Footer custom_footer_color={custom_footer_color} />}
 
 			{/* Shopping cart modal */}
-			<ShoppingCart_Modal
-				isOpen={show_shoppingCart}
-				setIsOpen={setShow_ShoppingCart}
-				shoppingCart_data={dummy_shoppingCart}
-			/>
+			{shoppingCart_data && (
+				<ShoppingCart_Modal
+					isOpen={show_shoppingCart}
+					setIsOpen={setShow_ShoppingCart}
+					shoppingCart_data={shoppingCart_data}
+				/>
+			)}
 		</div>
 	);
 };

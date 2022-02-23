@@ -18,7 +18,7 @@
 
 /* ANTD */
 
-/* Button */
+/* BUTTON */
 /* Default */
 .ant-btn {
 	background: var(--color-teal-501);
@@ -88,7 +88,7 @@
 }
 /* End button ghost */
 
-/* Input */
+/* INPUT */
 /* Password */
 /* Input tipo password width 95% */
 .ant-input-password.w-95-percent > .ant-input {
@@ -106,6 +106,29 @@
 .ant-input-password > .ant-input-suffix > .ant-input-password-icon {
 	position: relative;
 	right: 25px;
+}
+
+/* Search */
+.ant-input-search > .ant-input-wrapper > .ant-input {
+	border-radius: 8px 0px 0px 8px;
+	font-size: 14px;
+	padding: 2px 8px;
+}
+
+.ant-input-search > .ant-input-wrapper > .ant-input-group-addon > .ant-btn {
+	border-radius: 0px 8px 8px 0px;
+}
+
+/* BADGE */
+.ant-badge > .ant-badge-count {
+	background: red;
+	border-radius: 999px;
+	padding: 0px 5px;
+	top: -8px;
+	right: 10px;
+	font-size: 10px;
+	font-weight: 800;
+	color: white;
 }
 
 /* CUSTOM CLASSES */
