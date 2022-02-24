@@ -1,10 +1,14 @@
 import * as React from 'react';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
+import { useQuery } from 'react-query';
 
 // API
 import {
 	get_products_all,
 	get_products_byCategory,
 	get_products_new,
+	get_shoppingCart_byID,
 } from 'api';
 
 // Local components
@@ -22,8 +26,6 @@ import { Tab } from '@headlessui/react';
 // Antd
 import { Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
 
 const Home: React.FC<any> = ({ session, user }) => {
 	// Data
@@ -32,6 +34,16 @@ const Home: React.FC<any> = ({ session, user }) => {
 	const [women_products, setWomen_Products] = React.useState<Product[]>([]);
 	const [men_products, setMen_Products] = React.useState<Product[]>([]);
 
+	// Get shopping cart info
+	const {
+		data: shoppingCart_data,
+		refetch: shoppingCart_refetch,
+		isFetching: shoppingCart_isLoading,
+	} = useQuery(['Shopping_Cart', session?.userData, user], () =>
+		get_shoppingCart_byID(user?.shoppingCart._id)
+	);
+
+	// Utils
 	// Show Rows on tabs
 	const [show_rows, setShow_Rows] = React.useState<number>(1);
 
@@ -84,19 +96,30 @@ const Home: React.FC<any> = ({ session, user }) => {
 			setMen_Products(response.data);
 		});
 
-		console.log('-- HOME page, session --', session);
+		// console.log('-- HOME page, session --', session);
 	}, []);
 
 	return (
 		<Layout
 			withHeader
 			withFooter
+			className="layout flex flex-col items-center px-[100px]"
+			// Session
 			session={session}
 			user={user}
-			className="layout flex flex-col items-center px-[100px]"
+			// Shopping cart
+			shoppingCart_data={shoppingCart_data}
+			shoppingCart_refetch={shoppingCart_refetch}
+			shoppingCart_isLoading={shoppingCart_isLoading}
 		>
 			{/* Banner highlight */}
-			{new_products.length > 0 && <Home_banner product={new_products[0]} />}
+			{new_products.length > 0 && (
+				<Home_banner
+					product={new_products[0]}
+					user={user}
+					shoppingCart_refetch={shoppingCart_refetch}
+				/>
+			)}
 
 			{/* Best Seller */}
 			<Items_Displayer
@@ -105,6 +128,12 @@ const Home: React.FC<any> = ({ session, user }) => {
 				orientation="horizontal"
 				products_list={all_products.slice(0, 3)}
 				className="w-full mb-20 gap-8"
+				// Session
+				user={user}
+				// Shopping cart
+				shoppingCart_data={shoppingCart_data}
+				shoppingCart_refetch={shoppingCart_refetch}
+				shoppingCart_isLoading={shoppingCart_isLoading}
 			/>
 
 			{/* Tabs */}
@@ -174,7 +203,12 @@ const Home: React.FC<any> = ({ session, user }) => {
 							orientation="horizontal"
 							products_list={all_products}
 							show_rows={show_rows}
-							className="justify-evenly gap-4 w-full mb-10"
+							user={user}
+							// Shopping cart
+							shoppingCart_data={shoppingCart_data}
+							shoppingCart_refetch={shoppingCart_refetch}
+							shoppingCart_isLoading={shoppingCart_isLoading}
+							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
 
@@ -185,6 +219,11 @@ const Home: React.FC<any> = ({ session, user }) => {
 							orientation="horizontal"
 							products_list={new_products}
 							show_rows={show_rows}
+							user={user}
+							// Shopping cart
+							shoppingCart_data={shoppingCart_data}
+							shoppingCart_refetch={shoppingCart_refetch}
+							shoppingCart_isLoading={shoppingCart_isLoading}
 							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
@@ -195,6 +234,11 @@ const Home: React.FC<any> = ({ session, user }) => {
 							product_type="type2"
 							orientation="horizontal"
 							products_list={women_products}
+							user={user}
+							// Shopping cart
+							shoppingCart_data={shoppingCart_data}
+							shoppingCart_refetch={shoppingCart_refetch}
+							shoppingCart_isLoading={shoppingCart_isLoading}
 							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
@@ -205,6 +249,11 @@ const Home: React.FC<any> = ({ session, user }) => {
 							product_type="type2"
 							orientation="horizontal"
 							products_list={men_products}
+							user={user}
+							// Shopping cart
+							shoppingCart_data={shoppingCart_data}
+							shoppingCart_refetch={shoppingCart_refetch}
+							shoppingCart_isLoading={shoppingCart_isLoading}
 							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
@@ -212,19 +261,21 @@ const Home: React.FC<any> = ({ session, user }) => {
 			</Tab.Group>
 
 			{/* Show more button */}
-			<div className="flex items-center w-full gap-8 mb-14">
-				<Divider className="w-full" custom_divider_color="#a3e4db" />
-				<Button
-					ghost
-					onClick={() => {
-						setShow_Rows(show_rows + 1);
-					}}
-					className="text-2xl text-center w-full h-[66px]"
-				>
-					See more
-				</Button>
-				<Divider className="w-full" custom_divider_color="#a3e4db" />
-			</div>
+			{show_rows * 4 < all_products.length && (
+				<div className="flex items-center w-full gap-8 mb-14">
+					<Divider className="w-full" custom_divider_color="#a3e4db" />
+					<Button
+						ghost
+						onClick={() => {
+							setShow_Rows(show_rows + 1);
+						}}
+						className="text-2xl text-center w-full h-[66px]"
+					>
+						See more
+					</Button>
+					<Divider className="w-full" custom_divider_color="#a3e4db" />
+				</div>
+			)}
 
 			{/* Highlight collection */}
 			<div className="highlight_collection flex bg-white rounded-lg w-full mb-6">
@@ -254,6 +305,10 @@ const Home: React.FC<any> = ({ session, user }) => {
 						product_type="type3"
 						orientation="horizontal"
 						products_list={new_products.slice(inf_limit, sup_limit)}
+						// Shopping cart
+						shoppingCart_data={shoppingCart_data}
+						shoppingCart_refetch={shoppingCart_refetch}
+						shoppingCart_isLoading={shoppingCart_isLoading}
 						className="justify-evenly w-full"
 					/>
 

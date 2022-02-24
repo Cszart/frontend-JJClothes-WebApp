@@ -1,4 +1,13 @@
 // Backend Structure
+
+import {
+	RefetchOptions,
+	RefetchQueryFilters,
+	QueryObserverResult,
+} from 'react-query';
+import { ShoppingCart } from './shopping_cart';
+import { User } from './user';
+
 // Tag
 export type Tags = {
 	name: string;
@@ -58,4 +67,8 @@ export interface Item_Props {
 	id: number;
 	className?: string;
 	product_item: Product;
+	user?: User;
+	shoppingCart_refetch?: <TPageData>(
+		options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+	) => Promise<QueryObserverResult<ShoppingCart | undefined, unknown>>;
 }

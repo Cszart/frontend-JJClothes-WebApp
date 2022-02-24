@@ -2,30 +2,54 @@ import * as React from 'react';
 import clsx from 'clsx';
 
 // Interfaces
-import { Product } from 'interfaces';
+import { Product, ShoppingCart, User } from 'interfaces';
 
 // Local components
 import { Item_Inline, Item_type_1, Item_type_2, Item_type_3 } from '.';
 import { Divider } from 'components/divider';
+import {
+	RefetchOptions,
+	RefetchQueryFilters,
+	QueryObserverResult,
+} from 'react-query';
 
 interface Items_Displayer_Props {
 	className?: string;
 	className_product_item?: string;
+
 	title?: string;
+
 	orientation?: 'vertical' | 'horizontal';
 	product_type?: 'type1' | 'type2' | 'type3' | 'inline';
+
 	products_list: Product[];
 	show_rows?: number;
+
+	user?: User;
+
+	// Shopping cart
+	shoppingCart_data?: ShoppingCart | undefined;
+	shoppingCart_refetch?: <TPageData>(
+		options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+	) => Promise<QueryObserverResult<ShoppingCart | undefined, unknown>>;
+	shoppingCart_isLoading?: boolean;
 }
 
 export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
 	className,
 	className_product_item,
+
 	title,
+
 	orientation = 'horizontal',
 	product_type = 'type1',
+
 	products_list = [],
 	show_rows = 1,
+
+	user,
+
+	shoppingCart_refetch,
 }) => {
 	return (
 		<div
@@ -53,6 +77,7 @@ export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
 								id={key}
 								className={className_product_item}
 								product_item={product_item}
+								user={user}
 							/>
 						);
 					}
@@ -67,6 +92,8 @@ export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
 								id={key}
 								className={className_product_item}
 								product_item={product_item}
+								user={user}
+								shoppingCart_refetch={shoppingCart_refetch}
 							/>
 						);
 					}
@@ -80,6 +107,7 @@ export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
 							id={key}
 							className={className_product_item}
 							product_item={product_item}
+							user={user}
 						/>
 					);
 				})}
@@ -92,6 +120,7 @@ export const Items_Displayer: React.FC<Items_Displayer_Props> = ({
 							id={key}
 							className={className_product_item}
 							product_item={product_item}
+							user={user}
 						/>
 					);
 				})}

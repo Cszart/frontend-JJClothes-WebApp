@@ -1,12 +1,22 @@
 import * as React from 'react';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
+import { useQuery } from 'react-query';
 import clsx from 'clsx';
 
 // API
+import {
+	get_products_byID,
+	get_shoppingCart_byID,
+	patch_shoppingCart_add_product,
+} from 'api';
 
 // Local components
 import { Layout } from 'components/layout';
 import { Divider } from 'components/divider';
+import { Items_Displayer } from 'components/items';
 
 // Interfaces
 import { Product, Tags, User } from 'interfaces';
@@ -22,11 +32,6 @@ import {
 	ShoppingCartOutlined,
 } from '@ant-design/icons';
 import { dummy_products } from 'dummy_data';
-import { Items_Displayer } from 'components/items';
-import { get_products_byID } from 'api';
-import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
 
 interface Product_Detail_Props {
 	user: User;
@@ -37,10 +42,43 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 	// Data
 	const [product, setProduct] = React.useState<Product>();
 
+	// Get shopping cart info
+	const {
+		data: shoppingCart_data,
+		refetch: shoppingCart_refetch,
+		isFetching: shoppingCart_isLoading,
+	} = useQuery(['Shopping_Cart', user], () =>
+		get_shoppingCart_byID(user?.shoppingCart._id)
+	);
+
 	// Utils
 	const [current_photo, setCurrent_Photo] = React.useState<string>();
 	const [current_discount, setCurrent_Discount] = React.useState<number>(0);
 	const [current_quantity, setCurrent_Quantity] = React.useState<number>(1);
+
+	// FUNCTIONS
+	// Add to cart
+	const add_to_shoppingCart = async () => {
+		if (user && user.access_token && product) {
+			const product_data = { quantity: current_quantity, product: product._id };
+			const add_response = await patch_shoppingCart_add_product(
+				user.access_token,
+				user.shoppingCart._id,
+				product_data
+			);
+
+			if (shoppingCart_refetch) {
+				shoppingCart_refetch();
+			}
+
+			if (add_response.status != 200) {
+				console.log(
+					'-- Product page, add to shopping cart response --',
+					add_response
+				);
+			}
+		}
+	};
 
 	// UseEffects
 	// GET and SET product details
@@ -73,7 +111,15 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 	}, [product]);
 
 	return (
-		<Layout withHeader user={user} className="layout flex flex-col">
+		<Layout
+			withHeader
+			user={user}
+			className="layout flex flex-col"
+			// Shopping cart
+			shoppingCart_data={shoppingCart_data}
+			shoppingCart_refetch={shoppingCart_refetch}
+			shoppingCart_isLoading={shoppingCart_isLoading}
+		>
 			{/* Breadcrumbs */}
 			<div className="w-full px-[165px] mb-10">
 				<Breadcrumb>
@@ -191,6 +237,7 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 						</div>
 
 						<Button
+							onClick={add_to_shoppingCart}
 							icon={<ShoppingCartOutlined />}
 							className={clsx(
 								'flex justify-center items-center gap-2',

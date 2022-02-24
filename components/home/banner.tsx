@@ -6,17 +6,54 @@ import Link from 'next/link';
 import { Divider } from 'components/divider';
 
 // interfaces
-import { Images, Product } from 'interfaces';
+import { Images, Product, ShoppingCart, User } from 'interfaces';
 
 // antd
 import { Button } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { patch_shoppingCart_add_product } from 'api';
+import {
+	RefetchOptions,
+	RefetchQueryFilters,
+	QueryObserverResult,
+} from 'react-query';
 
 export interface Home_banner_props {
 	product: Product;
+	user: User;
+	shoppingCart_refetch?: <TPageData>(
+		options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+	) => Promise<QueryObserverResult<ShoppingCart | undefined, unknown>>;
 }
 
-const Home_banner: React.FC<Home_banner_props> = ({ product }) => {
+const Home_banner: React.FC<Home_banner_props> = ({
+	product,
+	user,
+	shoppingCart_refetch,
+}) => {
+	const add_to_shoppingCart = async () => {
+		const product_data = { quantity: 1, product: product._id };
+
+		if (user && user.access_token) {
+			const add_response = await patch_shoppingCart_add_product(
+				user.access_token,
+				user.shoppingCart._id,
+				product_data
+			);
+
+			if (shoppingCart_refetch) {
+				shoppingCart_refetch();
+			}
+
+			if (add_response.status != 200) {
+				console.log(
+					'-- Banner component, add to shopping cart response --',
+					add_response
+				);
+			}
+		}
+	};
+
 	return (
 		<div
 			className={clsx(
@@ -62,6 +99,7 @@ const Home_banner: React.FC<Home_banner_props> = ({ product }) => {
 				<div className="flex flex-wrap gap-14 z-10">
 					<Button
 						icon={<ShoppingCartOutlined />}
+						onClick={add_to_shoppingCart}
 						className={clsx(
 							'flex justify-center items-center gap-2',
 							'text-xl text-white text-bold',

@@ -11,6 +11,7 @@ import { ShoppingOutlined } from '@ant-design/icons';
 import { Badge, Input } from 'antd';
 
 import { Divider } from 'components/divider';
+import { useRouter } from 'next/router';
 
 const { Search } = Input;
 
@@ -29,8 +30,13 @@ export const Header: React.FC<Header_Props> = ({
 	user,
 	shoppinCart_items_count = 0,
 }) => {
+	const router = useRouter();
+
 	const onSearch = (searchValue: string) => {
-		console.log('-- HEADER , search input value -- ', searchValue);
+		router.push({
+			pathname: '/search',
+			query: { search_text: searchValue },
+		});
 	};
 
 	return (

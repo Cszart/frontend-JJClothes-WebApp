@@ -7,10 +7,17 @@ import { Divider } from 'components/divider';
 import { Button } from 'antd';
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
-export const ShoppingCart_Item: React.FC<Product_Item> = ({
-	quantity,
-	product,
+interface ShoppingCart_Item_Props {
+	product_item: Product_Item;
+	remove_from_shoppingCart: (product_id: string) => Promise<void>;
+}
+
+export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
+	product_item,
+	remove_from_shoppingCart,
 }) => {
+	const { quantity, product } = product_item;
+
 	const discount_amount = (product.price * product.discount) / 100;
 
 	const [current_quantity, setCurrent_Quantity] =
@@ -50,7 +57,11 @@ export const ShoppingCart_Item: React.FC<Product_Item> = ({
 
 					{/* price */}
 					<h3 className="text-2xl font-semibold text-gray-701 mb-6">
-						{`${product.price - discount_amount} $`}
+						{`${
+							Math.round(
+								(product.price - discount_amount + Number.EPSILON) * 100
+							) / 100
+						} $`}
 					</h3>
 				</div>
 			</div>
@@ -90,6 +101,7 @@ export const ShoppingCart_Item: React.FC<Product_Item> = ({
 					type="primary"
 					ghost
 					icon={<DeleteOutlined />}
+					onClick={() => remove_from_shoppingCart(product._id)}
 					className="flex justify-center items-center w-[30px] h-[30px]"
 				/>
 			</div>

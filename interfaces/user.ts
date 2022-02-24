@@ -13,6 +13,7 @@ export type User = {
 	// Relations
 	shoppingCart: ShoppingCart;
 
+	access_token?: string;
 	_id: string;
 	__v: number;
 };

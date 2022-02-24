@@ -77,10 +77,15 @@ const Guide_Styles: React.FC<any> = ({ user }) => {
 				Shopping cart item
 			</h1>
 			<ShoppingCart_Item
-				quantity={1}
-				product={dummy_products[2]}
-				_id={'Dummy-Item-1'}
-				__v={1}
+				product_item={{
+					quantity: 2,
+					product: dummy_products[2],
+					__v: 2,
+					_id: '2',
+				}}
+				remove_from_shoppingCart={async (product_id: string) =>
+					console.log('Removed item', product_id)
+				}
 			/>
 
 			<h1 className="text-2xl font-bold bg-black text-white mt-8 mb-8">

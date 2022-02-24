@@ -1,19 +1,46 @@
 import * as React from 'react';
 import clsx from 'clsx';
+import Link from 'next/link';
+import { patch_shoppingCart_add_product } from 'api';
 
 // Interfaces
 import { Item_Props } from 'interfaces';
 import { Divider } from 'components/divider';
-import Link from 'next/link';
 
 export const Item_type_2: React.FC<Item_Props> = ({
 	id,
 	className,
 	product_item,
+	user,
+	shoppingCart_refetch,
 }) => {
 	const discount_amount = (product_item.price * product_item.discount) / 100;
 
 	const [isEnterMouse, setIsEnterMouse] = React.useState<boolean>(false);
+
+	const add_to_shoppingCart = async () => {
+		const product_data = { quantity: 1, product: product_item._id };
+
+		if (user && user.access_token) {
+			const add_response = await patch_shoppingCart_add_product(
+				user.access_token,
+				user.shoppingCart._id,
+				product_data
+			);
+
+			if (shoppingCart_refetch) {
+				shoppingCart_refetch();
+			}
+
+			if (add_response.status != 200) {
+				console.log(
+					'-- Item type2 component, add to shopping cart response --',
+					add_response
+				);
+			}
+		}
+	};
+
 	return (
 		<div
 			className={clsx(
@@ -70,7 +97,7 @@ export const Item_type_2: React.FC<Item_Props> = ({
 
 			{/* add to cart */}
 			<button
-				onClick={() => alert('Added to cart')}
+				onClick={add_to_shoppingCart}
 				className={clsx(
 					'w-full h-10 px-14',
 					'align-center',

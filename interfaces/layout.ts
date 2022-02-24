@@ -1,5 +1,10 @@
+import { ShoppingCart, User } from 'interfaces';
 import { Session } from 'next-auth';
-import { User } from './user';
+import {
+	QueryObserverResult,
+	RefetchOptions,
+	RefetchQueryFilters,
+} from 'react-query';
 
 export interface Layout_Props {
 	className?: string;
@@ -16,4 +21,11 @@ export interface Layout_Props {
 	// Actual session
 	session?: Session | null;
 	user?: User;
+
+	// Shopping cart
+	shoppingCart_data?: ShoppingCart | undefined;
+	shoppingCart_refetch?: <TPageData>(
+		options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+	) => Promise<QueryObserverResult<ShoppingCart | undefined, unknown>>;
+	shoppingCart_isLoading?: boolean;
 }

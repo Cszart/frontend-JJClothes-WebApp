@@ -1,6 +1,5 @@
 import * as React from 'react';
 import clsx from 'clsx';
-import { dummy_shoppingCart } from 'dummy_data';
 
 // Interfaces
 import { Images, Product_Item, User } from 'interfaces';
@@ -15,6 +14,8 @@ import { ShoppingCart_Item } from 'components/shopping_cart';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import { get_shoppingCart_byID, patch_shoppingCart_update } from 'api';
+import { useQuery } from 'react-query';
 
 interface ShoppingCart_Modal_Props {
 	user: User;
@@ -22,13 +23,53 @@ interface ShoppingCart_Modal_Props {
 export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
 	user,
 }) => {
-	const { subtotal, items } = dummy_shoppingCart;
+	// Get shopping cart info
+	const {
+		data: shoppingCart_data,
+		refetch: shoppingCart_refetch,
+		isFetching: shoppingCart_isLoading,
+	} = useQuery(['Shopping_Cart', user], () =>
+		get_shoppingCart_byID(user?.shoppingCart._id)
+	);
+
+	const remove_from_shoppingCart = async (product_id: string) => {
+		if (user && user.access_token && shoppingCart_data) {
+			// Filter items matching id
+			const items_filtered = shoppingCart_data.items.filter(
+				(item: Product_Item) => {
+					return item.product._id != product_id;
+				}
+			);
+
+			const new_shoppingCart = shoppingCart_data;
+			new_shoppingCart.items = items_filtered;
+
+			// Update shopping cart backend call
+			const update_response = await patch_shoppingCart_update(
+				user.access_token,
+				new_shoppingCart
+			);
+
+			if (shoppingCart_refetch) shoppingCart_refetch();
+
+			if (update_response.status != 200) {
+				console.log(
+					'-- Shopping cart modal, remove item response --',
+					update_response
+				);
+			}
+		}
+	};
 
 	return (
 		<Layout
 			withHeader
 			user={user}
 			className="layout flex flex-col gap-7 px-[105px]"
+			// Shopping cart
+			shoppingCart_data={shoppingCart_data}
+			shoppingCart_refetch={shoppingCart_refetch}
+			shoppingCart_isLoading={shoppingCart_isLoading}
 		>
 			{/* First row */}
 			<div className="flex flex-row flex-wrap justify-evenly w-full">
@@ -61,13 +102,15 @@ export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
 							Number of items
 						</h4>
 						<h4 className="text-2xl text-medium text-gray-701">
-							{items.length}
+							{shoppingCart_data && shoppingCart_data.items.length}
 						</h4>
 					</div>
 
 					<div className="flex flex-wrap justify-between w-full">
 						<h4 className="text-2xl text-medium text-gray-701">Subtotal</h4>
-						<h4 className="text-2xl text-medium text-gray-701">{`$ ${subtotal}`}</h4>
+						<h4 className="text-2xl text-medium text-gray-701">
+							{shoppingCart_data && `$ ${shoppingCart_data.subtotal}`}
+						</h4>
 					</div>
 
 					<div className="flex flex-wrap justify-between w-full">
@@ -88,7 +131,8 @@ export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
 						<h1 className="text-2xl text-medium text-gray-701">Grand Total</h1>
 
 						<h1 className="text-4xl text-semibold text-gray-701">
-							{`$ ${subtotal + 666 + 100}`}
+							{shoppingCart_data &&
+								`$ ${shoppingCart_data.subtotal + 666 + 100}`}
 						</h1>
 					</div>
 				</div>
@@ -103,28 +147,36 @@ export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
 				)}
 			>
 				{/* Items */}
-				{items.map((product_item: Product_Item, key: number) => {
-					return (
-						<>
-							<ShoppingCart_Item key={key} {...product_item} />
-							<Divider
-								className="self-center w-[1020px]"
-								custom_divider_color="#000000"
-							/>
-						</>
-					);
-				})}
+				{shoppingCart_data?.items.map(
+					(product_item: Product_Item, key: number) => {
+						return (
+							<>
+								<ShoppingCart_Item
+									key={key}
+									product_item={product_item}
+									remove_from_shoppingCart={remove_from_shoppingCart}
+								/>
+								<Divider
+									className="self-center w-[1020px]"
+									custom_divider_color="#000000"
+								/>
+							</>
+						);
+					}
+				)}
 
 				{/* Subtotal */}
 				<div className="flex justify-end items-center gap-6 mt-10 mb-10 px-14">
 					<h3 className="text-xl text-gray-701">Subtotal</h3>
-					<h1 className="text-2xl font-semibold">{`$ ${subtotal}`}</h1>
+					<h1 className="text-2xl font-semibold">{`$ ${shoppingCart_data?.subtotal}`}</h1>
 				</div>
 
 				{/* Button */}
-				<Button className="self-center text-center text-xl text-bold rounded-lg w-[80%] mb-10 py-4">
-					Checkout
-				</Button>
+				<Link href={'/paymentBilling'}>
+					<Button className="self-center text-center text-xl text-bold rounded-lg w-[80%] mb-10 py-4">
+						Checkout
+					</Button>
+				</Link>
 			</div>
 		</Layout>
 	);
