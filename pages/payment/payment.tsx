@@ -14,6 +14,11 @@ const PaymentPage: React.FC<PaymentPage_Props> = ({ user }) => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [form] = Form.useForm();
 
+	React.useEffect(() => {
+		const value = localStorage.getItem('Random_name');
+		console.log('asdasdasd', value);
+	}, []);
+
 	return (
 		<Layout withHeader withFooter user={user} className="flex flex-col">
 			<div className="flex flex-row">
@@ -143,11 +148,9 @@ const PaymentPage: React.FC<PaymentPage_Props> = ({ user }) => {
 					</Button>
 				</Link>
 				<div className="w-1/12"></div>
-				<Link href={'/payment/confirmation'}>
-					<Button className="w-3/12 py-3" htmlType="submit">
-						Place My Order
-					</Button>
-				</Link>
+				<Button className="w-3/12 py-3" htmlType="submit">
+					Place My Order
+				</Button>
 			</div>
 		</Layout>
 	);

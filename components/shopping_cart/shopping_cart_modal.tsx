@@ -141,7 +141,7 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 							</div>
 
 							{/* Button */}
-							<Link href={'/paymentBilling'}>
+							<Link href={'/payment/billing'}>
 								<Button className="self-center text-center rounded-lg w-[80%] mb-10 py-4">
 									Checkout
 								</Button>

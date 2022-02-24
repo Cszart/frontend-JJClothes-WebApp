@@ -6,18 +6,41 @@ import Link from 'next/link';
 import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { User } from 'interfaces';
+import { get_shoppingCart_byID } from 'api';
+import { useQuery } from 'react-query';
 
 interface PaymentBilling_Props {
 	user: User;
 }
 const PaymentBilling: React.FC<PaymentBilling_Props> = ({ user }) => {
 	const [form] = Form.useForm();
+
+	// Get shopping cart info
+	const {
+		data: shoppingCart_data,
+		refetch: shoppingCart_refetch,
+		isFetching: shoppingCart_isLoading,
+	} = useQuery(['Shopping_Cart', user], () =>
+		get_shoppingCart_byID(user?.shoppingCart._id)
+	);
+
+	/// on Finish
 	const onFinish = (values: any) => {
 		console.log('Success:', values);
+		localStorage.setItem('Random_name', JSON.stringify(values));
 	};
 
 	return (
-		<Layout withHeader withFooter user={user} className="flex flex-row">
+		<Layout
+			withHeader
+			withFooter
+			user={user}
+			// Shopping cart
+			shoppingCart_data={shoppingCart_data}
+			shoppingCart_refetch={shoppingCart_refetch}
+			shoppingCart_isLoading={shoppingCart_isLoading}
+			className="flex flex-row"
+		>
 			{/*Left side*/}
 			<div className="w-1/2 p-10 flex flex-col">
 				<div className="p-10 bg-white">
