@@ -1,6 +1,3 @@
-import { Product_Item } from 'interfaces';
-import { User } from './user';
-
 export type Bill = {
 	// User data
 	fullName: string;
@@ -12,25 +9,27 @@ export type Bill = {
 	city: string;
 	street: string;
 	zip_code: string;
+	courier: string;
 };
 
 export type Payment = {
+	bank: number;
 	card_number: string;
 	security_digits: string;
 	expiring_date: string;
 };
 
 export type Order = {
-	_id: string;
-	__v: number;
+	_id?: string;
+	__v?: number;
 
-	purchase_date: Date;
+	purchase_date?: Date;
 	shipping_cost: number;
-	subtotal: number;
+	subtotal?: number;
 
 	// Relations
-	user: User;
+	user: string;
 	bill_info: Bill;
 	payment_info: Payment;
-	items: Product_Item[];
+	items: { quantity: number; product: string }[];
 };

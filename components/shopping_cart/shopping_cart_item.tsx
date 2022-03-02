@@ -10,11 +10,15 @@ import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 interface ShoppingCart_Item_Props {
 	product_item: Product_Item;
 	remove_from_shoppingCart: (product_id: string) => Promise<void>;
+	add_quantity: (product_id: string) => Promise<void>;
+	substract_quantity: (product_id: string) => Promise<void>;
 }
 
 export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 	product_item,
 	remove_from_shoppingCart,
+	add_quantity,
+	substract_quantity,
 }) => {
 	const { quantity, product } = product_item;
 
@@ -22,6 +26,18 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 
 	const [current_quantity, setCurrent_Quantity] =
 		React.useState<number>(quantity);
+
+	const change_quantity = (product_id: string, action: string) => {
+		if (action == 'add') {
+			add_quantity(product_id);
+			setCurrent_Quantity(current_quantity + 1);
+		}
+
+		if (action == 'substract') {
+			substract_quantity(product_id);
+			setCurrent_Quantity(current_quantity - 1);
+		}
+	};
 
 	return (
 		<div
@@ -72,9 +88,7 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 				<Button
 					type="primary"
 					icon={<MinusOutlined />}
-					onClick={() => {
-						setCurrent_Quantity(current_quantity - 1);
-					}}
+					onClick={() => change_quantity(product._id, 'substract')}
 					className="flex justify-center items-center w-[30px] h-[30px]"
 				/>
 
@@ -85,15 +99,17 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 				<Button
 					type="primary"
 					icon={<PlusOutlined />}
-					onClick={() => {
-						setCurrent_Quantity(current_quantity + 1);
-					}}
+					onClick={() => change_quantity(product._id, 'add')}
 					className="flex justify-center items-center w-[30px] h-[30px]"
 				/>
 
 				{/* Total price */}
 				<h1 className="text-2xl font-medium">
-					{product.price * current_quantity}
+					{`${
+						Math.round(
+							(product.price * current_quantity + Number.EPSILON) * 100
+						) / 100
+					} $`}
 				</h1>
 
 				{/* Delete button */}

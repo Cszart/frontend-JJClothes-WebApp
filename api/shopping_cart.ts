@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { ShoppingCart } from 'interfaces';
+import { ShoppingCart, ShoppingCart_Update } from 'interfaces';
 
-export const post_shoppingCart_add = async (
+export const post_shoppingCart_create = async (
 	token: string,
 	data: ShoppingCart
 ): Promise<any> => {
@@ -19,10 +19,11 @@ export const post_shoppingCart_add = async (
 
 export const patch_shoppingCart_update = async (
 	token: string,
-	data: ShoppingCart
+	shoppingCart_id: string,
+	data: ShoppingCart_Update
 ): Promise<any> => {
 	const patch_response = await axios.patch(
-		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/update_shoppingCart/${data._id}`,
+		`${process.env.NEXT_PUBLIC_API_URL}/shoppingCart/update_shoppingCart/${shoppingCart_id}`,
 		data,
 		{
 			headers: {

@@ -203,11 +203,13 @@ const Home: React.FC<any> = ({ session, user }) => {
 							orientation="horizontal"
 							products_list={all_products}
 							show_rows={show_rows}
+							// User session
 							user={user}
 							// Shopping cart
 							shoppingCart_data={shoppingCart_data}
 							shoppingCart_refetch={shoppingCart_refetch}
 							shoppingCart_isLoading={shoppingCart_isLoading}
+							// Class name
 							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
@@ -219,11 +221,13 @@ const Home: React.FC<any> = ({ session, user }) => {
 							orientation="horizontal"
 							products_list={new_products}
 							show_rows={show_rows}
+							// User session
 							user={user}
 							// Shopping cart
 							shoppingCart_data={shoppingCart_data}
 							shoppingCart_refetch={shoppingCart_refetch}
 							shoppingCart_isLoading={shoppingCart_isLoading}
+							// Class name
 							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>
@@ -234,6 +238,7 @@ const Home: React.FC<any> = ({ session, user }) => {
 							product_type="type2"
 							orientation="horizontal"
 							products_list={women_products}
+							// User session
 							user={user}
 							// Shopping cart
 							shoppingCart_data={shoppingCart_data}
@@ -249,11 +254,13 @@ const Home: React.FC<any> = ({ session, user }) => {
 							product_type="type2"
 							orientation="horizontal"
 							products_list={men_products}
+							// User session
 							user={user}
 							// Shopping cart
 							shoppingCart_data={shoppingCart_data}
 							shoppingCart_refetch={shoppingCart_refetch}
 							shoppingCart_isLoading={shoppingCart_isLoading}
+							// Class name
 							className="justify-evenly gap-y-16 gap-3 w-full mb-10"
 						/>
 					</Tab.Panel>

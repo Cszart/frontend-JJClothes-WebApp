@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Product_Item, ShoppingCart, User } from 'interfaces';
+import {
+	Product_Item,
+	ShoppingCart,
+	ShoppingCart_Update,
+	User,
+} from 'interfaces';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import clsx from 'clsx';
@@ -43,12 +48,86 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 				return item.product._id != product_id;
 			});
 
-			const new_shoppingCart = shoppingCart_data;
-			new_shoppingCart.items = items_filtered;
+			const new_shoppingCart: ShoppingCart_Update = {
+				items: items_filtered.map((item: Product_Item) => {
+					return { quantity: item.quantity, product: item.product._id };
+				}),
+			};
 
 			// Update shopping cart backend call
 			const update_response = await patch_shoppingCart_update(
 				user.access_token,
+				user.shoppingCart._id,
+				new_shoppingCart
+			);
+
+			if (shoppingCart_refetch) shoppingCart_refetch();
+
+			if (update_response.status != 200) {
+				console.log(
+					'-- Shopping cart modal, remove item response --',
+					update_response
+				);
+			}
+		}
+	};
+
+	const add_quantity_from_shoppingCart = async (product_id: string) => {
+		if (user && user.access_token) {
+			// Filter items matching id
+			const items_add = items.map((item: Product_Item) => {
+				if (product_id === item.product._id) {
+					return { ...item, quantity: item.quantity + 1 };
+				} else {
+					return item;
+				}
+			});
+
+			const new_shoppingCart: ShoppingCart_Update = {
+				items: items_add.map((item: Product_Item) => {
+					return { quantity: item.quantity, product: item.product._id };
+				}),
+			};
+
+			// Update shopping cart backend call
+			const update_response = await patch_shoppingCart_update(
+				user.access_token,
+				user.shoppingCart._id,
+				new_shoppingCart
+			);
+
+			if (shoppingCart_refetch) shoppingCart_refetch();
+
+			if (update_response.status != 200) {
+				console.log(
+					'-- Shopping cart modal, remove item response --',
+					update_response
+				);
+			}
+		}
+	};
+
+	const substract_quantity_from_shoppingCart = async (product_id: string) => {
+		if (user && user.access_token) {
+			// Filter items matching id
+			const items_substract = items.map((item: Product_Item) => {
+				if (product_id === item.product._id) {
+					return { ...item, quantity: item.quantity - 1 };
+				} else {
+					return item;
+				}
+			});
+
+			const new_shoppingCart: ShoppingCart_Update = {
+				items: items_substract.map((item: Product_Item) => {
+					return { quantity: item.quantity, product: item.product._id };
+				}),
+			};
+
+			// Update shopping cart backend call
+			const update_response = await patch_shoppingCart_update(
+				user.access_token,
+				user.shoppingCart._id,
 				new_shoppingCart
 			);
 
@@ -123,6 +202,8 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 										<ShoppingCart_Item
 											product_item={product_item}
 											remove_from_shoppingCart={remove_from_shoppingCart}
+											add_quantity={add_quantity_from_shoppingCart}
+											substract_quantity={substract_quantity_from_shoppingCart}
 										/>
 										<Divider
 											className="self-center w-[1020px]"
@@ -141,7 +222,7 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 							</div>
 
 							{/* Button */}
-							<Link href={'/payment/billing'}>
+							<Link href={'/payment'}>
 								<Button className="self-center text-center rounded-lg w-[80%] mb-10 py-4">
 									Checkout
 								</Button>

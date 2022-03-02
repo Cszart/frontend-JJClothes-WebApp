@@ -57,8 +57,8 @@ export type Product_Item = {
 	// Relations
 	product: Product;
 
-	_id: string;
-	__v: number;
+	_id?: string;
+	__v?: number;
 };
 
 // Frontend structure, components

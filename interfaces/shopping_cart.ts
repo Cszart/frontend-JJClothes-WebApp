@@ -13,3 +13,8 @@ export type ShoppingCart = {
 	__v: number;
 	_id: string;
 };
+
+// Shopping cart
+export type ShoppingCart_Update = {
+	items: { quantity: number; product: string }[];
+};

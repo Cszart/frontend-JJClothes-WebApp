@@ -12,6 +12,7 @@
 	--color-purple-901: #570c7a;
 	--color-esmerald-201: #a3e4db;
 	--color-teal-501: #0ebea6;
+	--color-gray-201: #999999;
 	--color-gray-701: #333333;
 	--color-zinc-101: #f7f6f4;
 }
@@ -19,10 +20,15 @@
 /* ANTD */
 
 /* BUTTON */
-/* Default */
+/* normal Default */
 .ant-btn {
 	background: var(--color-teal-501);
 	color: white;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
 }
 
 .ant-btn:hover {
@@ -35,7 +41,7 @@
 	font-family: Taviraj, sans-serif;
 }
 
-/* Primary */
+/* normal Primary */
 .ant-btn-primary {
 	background: var(--color-purple-301);
 	color: white;
@@ -47,13 +53,19 @@
 	color: white;
 	border-radius: 8px;
 }
+/* End normal buton */
 
 /* Button Ghost */
-/* Default */
+/* ghost Default */
 .ant-btn.ant-btn-background-ghost {
 	background-color: var(--color-zinc-101);
 	border: 1px solid var(--color-teal-501);
 	color: var(--color-teal-501);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
 }
 
 .ant-btn.ant-btn-background-ghost:hover {
@@ -75,11 +87,16 @@
 	color: var(--color-teal-501);
 }
 
-/* Primary */
+/* ghost Primary */
 .ant-btn-primary.ant-btn.ant-btn-background-ghost {
 	background-color: white;
 	border: 1px solid var(--color-purple-301);
 	color: var(--color-purple-901);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
 }
 .ant-btn-primary.ant-btn.ant-btn-background-ghost:hover {
 	background-color: var(--color-purple-901);
@@ -87,8 +104,14 @@
 	color: white;
 }
 /* End button ghost */
+/*********************************************************************************/
 
 /* INPUT */
+/* normal input */
+.ant-input {
+	border: 0px;
+}
+
 /* Password */
 /* Input tipo password width 95% */
 .ant-input-password.w-95-percent > .ant-input {
@@ -112,24 +135,38 @@
 .ant-input-search > .ant-input-wrapper > .ant-input {
 	border-radius: 8px 0px 0px 8px;
 	font-size: 14px;
-	padding: 2px 8px;
+	padding: 6px 8px;
 }
 
-.ant-input-search > .ant-input-wrapper > .ant-input-group-addon > .ant-btn {
-	border-radius: 0px 8px 8px 0px;
+.ant-input-search
+	> .ant-input-group
+	> .ant-input-group-addon:last-child
+	.ant-input-search-button {
+	padding-top: 0;
+	padding-bottom: 0;
+	border-radius: 0 8px 8px 0;
 }
+
+/* Selector */
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+	border: 0px;
+}
+.ant-select-suffix {
+	color: black;
+}
+
+/* Date picker */
+.ant-picker {
+	border: 0px;
+}
+/*********************************************************************************/
 
 /* BADGE */
 .ant-badge > .ant-badge-count {
-	background: red;
-	border-radius: 999px;
-	padding: 0px 5px;
-	top: -8px;
-	right: 10px;
-	font-size: 10px;
-	font-weight: 800;
-	color: white;
+	top: -2px;
+	right: -2px;
 }
+/*********************************************************************************/
 
 /* CUSTOM CLASSES */
 .text-modified {
@@ -155,4 +192,5 @@
 .input-billing {
 	width: 100%;
 	padding-top: 5px;
+	border-bottom: 1px solid #333333;
 }

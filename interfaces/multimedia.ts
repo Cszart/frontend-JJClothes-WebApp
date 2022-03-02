@@ -26,9 +26,24 @@ export type Images_Types =
 	| Images.order_confirmed_picture;
 
 export enum Icons {
+	checkoutgray = '/img/svg/checkoutgray.svg',
+	checkoutGreen = '/img/svg/checkoutGreen.svg',
+	confirmgray = '/img/svg/confirmgray.svg',
+	confirmgreen = '/img/svg/confirmgreen.svg',
 	magnifying = '/img/svg/magnifying.svg',
+	paymentgray = '/img/svg/paymentgray.svg',
+	paymentgreen = '/img/svg/paymentgreen.svg',
 	person = '/img/svg/person.svg',
 	shopping_bag = '/img/svg/shopping_bag.svg',
 }
 
-export type Icons_Type = Icons.magnifying | Icons.person | Icons.shopping_bag;
+export type Icons_Type =
+	| Icons.checkoutgray
+	| Icons.checkoutGreen
+	| Icons.confirmgray
+	| Icons.confirmgreen
+	| Icons.magnifying
+	| Icons.paymentgray
+	| Icons.paymentgreen
+	| Icons.person
+	| Icons.shopping_bag;

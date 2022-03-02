@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Product, ShoppingCart, User } from 'interfaces';
+import { Product, ShoppingCart, User, User_Rol } from 'interfaces';
 
 export const dummy_products: Product[] = [
 	{
@@ -647,7 +647,7 @@ export const dummy_user: User = {
 	lastname: 'User',
 	email: 'Dummy@user.com',
 	password: '123123',
-	rol: 'admin',
+	rol: User_Rol.ADMIN,
 
 	// Relations
 	shoppingCart: dummy_shoppingCart,

@@ -4,10 +4,10 @@ import { signOut } from 'next-auth/react';
 import clsx from 'clsx';
 
 // Interfaces
-import { Images, User } from 'interfaces';
+import { Images, User, User_Rol } from 'interfaces';
 
 // Antd library
-import { ShoppingOutlined } from '@ant-design/icons';
+import { FileSearchOutlined, ShoppingOutlined } from '@ant-design/icons';
 import { Badge, Input } from 'antd';
 
 import { Divider } from 'components/divider';
@@ -73,24 +73,38 @@ export const Header: React.FC<Header_Props> = ({
 			{/* Icons and button */}
 			<div
 				className={clsx(
-					'flex flex-wrap items-center',
-					{ 'gap-14': !user },
+					'flex flex-wrap justify-between items-center',
+					{ 'gap-12': !user },
 					{ 'gap-4': user }
 				)}
 			>
-				<div className="flex flex-wrap gap-4">
-					<Search placeholder="Search" onSearch={onSearch} />
+				{/* Search and icons */}
+				<div className="flex flex-wrap justify-between gap-4">
+					<Search
+						placeholder="Search"
+						onSearch={onSearch}
+						className="w-[70%]"
+					/>
 
-					<Badge count={shoppinCart_items_count} overflowCount={8}>
-						<ShoppingOutlined
-							className="w-6 h-6"
-							onClick={() => {
-								setShow_ShoppingCart(true);
-							}}
-						/>
-					</Badge>
+					<div className="flex justify-between items-center gap-6">
+						<Badge count={shoppinCart_items_count} overflowCount={8}>
+							<ShoppingOutlined
+								className=""
+								onClick={() => {
+									setShow_ShoppingCart(true);
+								}}
+							/>
+						</Badge>
+
+						{user && user.rol == User_Rol.ADMIN && (
+							<Link href={'#'}>
+								<FileSearchOutlined className="" />
+							</Link>
+						)}
+					</div>
 				</div>
 
+				{/* Login button */}
 				{!user && (
 					<Link href={'/auth/signin'}>
 						<button
@@ -105,6 +119,7 @@ export const Header: React.FC<Header_Props> = ({
 					</Link>
 				)}
 
+				{/* Log out */}
 				{user && (
 					<button
 						onClick={() => signOut({ callbackUrl: '/' })}

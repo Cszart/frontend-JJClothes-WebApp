@@ -86,6 +86,12 @@ const Guide_Styles: React.FC<any> = ({ user }) => {
 				remove_from_shoppingCart={async (product_id: string) =>
 					console.log('Removed item', product_id)
 				}
+				add_quantity={async (product_id: string) =>
+					console.log('Add item', product_id)
+				}
+				substract_quantity={async (product_id: string) =>
+					console.log('Substract item', product_id)
+				}
 			/>
 
 			<h1 className="text-2xl font-bold bg-black text-white mt-8 mb-8">
