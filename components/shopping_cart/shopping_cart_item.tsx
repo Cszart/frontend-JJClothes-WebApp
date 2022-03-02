@@ -107,7 +107,9 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 				<h1 className="text-2xl font-medium">
 					{`${
 						Math.round(
-							(product.price * current_quantity + Number.EPSILON) * 100
+							((product.price - product.discount) * current_quantity +
+								Number.EPSILON) *
+								100
 						) / 100
 					} $`}
 				</h1>

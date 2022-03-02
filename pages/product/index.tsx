@@ -250,6 +250,15 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 
 						<Button
 							ghost
+							onClick={() => {
+								router.push({
+									pathname: '/payment',
+									query: {
+										product_id: product?._id,
+										quantity: current_quantity,
+									},
+								});
+							}}
 							className="text-xl text-bold text-center py-4 px-[52px]"
 						>
 							Buy

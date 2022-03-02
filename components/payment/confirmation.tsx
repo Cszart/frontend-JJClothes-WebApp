@@ -34,7 +34,7 @@ export const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({
 	track_number,
 }) => {
 	return (
-		<div className="flex flex-row">
+		<div className="flex flex-row flex-wrap">
 			{/* Nav icons bar */}
 			<div className="iconsBar flex flex-wrap justify-center items-baseline w-full gap-4">
 				{/* Checkout */}

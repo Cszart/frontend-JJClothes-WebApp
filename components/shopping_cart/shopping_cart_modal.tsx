@@ -40,6 +40,8 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 	shoppingCart_refetch,
 }) => {
 	const { subtotal, items } = shoppingCart_data;
+	const [current_subtotal, setCurrent_subtotal] =
+		React.useState<number>(subtotal);
 
 	const remove_from_shoppingCart = async (product_id: string) => {
 		if (user && user.access_token) {
@@ -142,6 +144,20 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 		}
 	};
 
+	// Calculate current total
+	React.useEffect(() => {
+		// if items is not undefined
+		if (items) {
+			let new_total = 0;
+			items.forEach((item: Product_Item) => {
+				new_total =
+					new_total +
+					(item.product.price - item.product.discount) * item.quantity;
+			});
+			setCurrent_subtotal(new_total);
+		}
+	}, [items]);
+
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog
@@ -217,7 +233,7 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 							<div className="flex justify-end items-center gap-6 mt-10 mb-10 px-14">
 								<h3 className="text-xl text-gray-701">Subtotal</h3>
 								<h1 className="text-2xl font-semibold">{`${
-									Math.round((subtotal + Number.EPSILON) * 100) / 100
+									Math.round((current_subtotal + Number.EPSILON) * 100) / 100
 								} $`}</h1>
 							</div>
 

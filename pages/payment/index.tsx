@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 
 // API
 import {
+	get_products_byID,
 	get_shoppingCart_byID,
 	patch_shoppingCart_update,
 	post_order_add,
@@ -25,8 +26,11 @@ import {
 	ShoppingCart_Update,
 	User,
 } from 'interfaces';
+import { useRouter } from 'next/router';
 
-const Home: React.FC<{ user: User }> = ({ user }) => {
+const Payment: React.FC<{ user: User }> = ({ user }) => {
+	const router = useRouter();
+
 	// Get shopping cart info
 	const {
 		data: shoppingCart_data,
@@ -84,7 +88,7 @@ const Home: React.FC<{ user: User }> = ({ user }) => {
 
 			// Call to backend
 			const order_response = await post_order_add(submit_data);
-			// console.log('-- Payment, create order response --', order_response);
+			console.log('-- Payment, create order response --', order_response);
 			setOrder_Response_Data(order_response.data);
 
 			// Remove pucharsed items from cart
@@ -124,16 +128,31 @@ const Home: React.FC<{ user: User }> = ({ user }) => {
 				}
 			}
 
-			// setForm_Step('confirmation');
+			setForm_Step('confirmation');
 		}
 	};
 
 	// useEffects
 	// Set Items
 	React.useEffect(() => {
-		// if items is not undefined
-		if (shoppingCart_data && shoppingCart_data.items) {
-			setCurrent_Items(shoppingCart_data.items);
+		// if user is only buying one item
+		if (router.query.product_id && router.query.quantity) {
+			const single_product_id = router.query.product_id as string;
+			const single_product_quantity = parseInt(
+				router.query.quantity as string,
+				10
+			);
+
+			// Fetch the product data
+			get_products_byID(single_product_id).then((response) => {
+				setCurrent_Items([
+					{ quantity: single_product_quantity, product: response.data },
+				]);
+			});
+		} else {
+			if (shoppingCart_data && shoppingCart_data.items) {
+				setCurrent_Items(shoppingCart_data.items);
+			}
 		}
 	}, [shoppingCart_data]);
 
@@ -219,4 +238,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	};
 };
 
-export default Home;
+export default Payment;
