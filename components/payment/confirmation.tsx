@@ -6,6 +6,7 @@ import { Bill, Icons, Images, Product_Item, User } from 'interfaces';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import { CarOutlined } from '@ant-design/icons';
 
 interface PaymentConfirmation_Props {
 	user: User;
@@ -19,7 +20,6 @@ interface PaymentConfirmation_Props {
 	subtotal?: number;
 	shipping_cost?: number;
 
-	delivery_time?: string;
 	track_number?: string;
 }
 
@@ -30,7 +30,6 @@ export const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({
 	subtotal,
 	shipping_cost,
 
-	delivery_time,
 	track_number,
 }) => {
 	return (
@@ -87,12 +86,16 @@ export const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({
 			<div className="flex flex-col w-1/2 p-10">
 				<div className="p-10 bg-white w-full">
 					<div className="flex flex-row w-full">
-						<h3 className="text-2xl text-black pb-6 w-1/2">
-							{delivery_time} days delivery
-						</h3>
-						<h3 className="text-2xl text-black pb-6 w-1/2">
-							{billing_data?.courier}
-						</h3>
+						<h3 className="text-2xl text-black pb-6 w-1/2">Delivery</h3>
+
+						<div className="flex items-center gap-4 pb-6 w-1/2">
+							<CarOutlined className="w-4 h-4" />
+							<h3 className="text-2xl text-black">
+								{billing_data &&
+									billing_data.courier.charAt(0).toUpperCase() +
+										billing_data.courier.slice(1)}
+							</h3>
+						</div>
 					</div>
 
 					<div className="flex flex-row">

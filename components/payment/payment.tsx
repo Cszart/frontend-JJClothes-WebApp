@@ -21,12 +21,12 @@ interface PaymentPage_Props {
 	// data
 	billing_data?: Bill;
 
+	current_items?: Product_Item[];
+	setCurrent_Items: React.Dispatch<React.SetStateAction<Product_Item[]>>;
+
 	// Detail order
 	subtotal?: number;
 	shipping_cost?: number;
-
-	current_items?: Product_Item[];
-	setCurrent_Items: React.Dispatch<React.SetStateAction<Product_Item[]>>;
 
 	// onFinish
 	onFinish_Payment: (values: Payment, bank_selected: number) => void;
@@ -34,11 +34,11 @@ interface PaymentPage_Props {
 export const PaymentPage: React.FC<PaymentPage_Props> = ({
 	billing_data,
 
-	subtotal,
-	shipping_cost,
-
 	current_items,
 	setCurrent_Items,
+
+	subtotal,
+	shipping_cost,
 
 	onFinish_Payment,
 }) => {

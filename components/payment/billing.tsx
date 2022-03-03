@@ -21,7 +21,10 @@ interface PaymentBilling_Props {
 
 	// Detail order
 	subtotal?: number;
-	shipping_cost?: number;
+	shippingCost?: number;
+
+	// State
+	setCurrent_State: React.Dispatch<React.SetStateAction<string | undefined>>;
 
 	// onFinish
 	onFinish_Billing: (values: Bill) => void;
@@ -29,11 +32,20 @@ interface PaymentBilling_Props {
 
 export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 	subtotal,
-	shipping_cost,
+
+	shippingCost,
+	setCurrent_State,
 
 	onFinish_Billing,
 }) => {
 	const [form] = Form.useForm();
+
+	// Functions
+	// onChange state
+	const onChange = (value: any) => {
+		console.log(`-- Billing page, value selected -- ${value}`);
+		setCurrent_State(value);
+	};
 
 	return (
 		<div className="billing flex flex-row flex-wrap w-full gap-8 px-[110px]">
@@ -84,8 +96,8 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 					<h3 className="text-2xl text-black pb-6 w-1/2">Shipping Cost</h3>
 					<h3 className="text-2xl text-black pb-6 w-1/2">
 						${' '}
-						{shipping_cost
-							? Math.round((shipping_cost + Number.EPSILON) * 100) / 100
+						{shippingCost
+							? Math.round((shippingCost + Number.EPSILON) * 100) / 100
 							: ''}
 					</h3>
 				</div>
@@ -99,8 +111,8 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 					<h3 className="text-2xl text-black pb-6 w-1/2">Grand Total</h3>
 					<h3 className="text-3xl text-black pb-6 w-1/2">
 						$
-						{subtotal && shipping_cost
-							? Math.round((subtotal + shipping_cost + Number.EPSILON) * 100) /
+						{subtotal && shippingCost
+							? Math.round((subtotal + shippingCost + Number.EPSILON) * 100) /
 							  100
 							: ''}
 					</h3>
@@ -192,6 +204,7 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 								showSearch
 								placeholder="Ex: Distrito Capital"
 								className="input-billing"
+								onChange={onChange}
 								// Config props
 								optionFilterProp="children"
 								filterOption={(input, option) =>
@@ -200,10 +213,10 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 										.indexOf(input.toLowerCase()) >= 0
 								}
 							>
-								{venezuela_states.map((state: string, key: number) => {
+								{venezuela_states.map((state, key: number) => {
 									return (
-										<Option key={key} value={state.toLocaleLowerCase()}>
-											{state}
+										<Option key={key} value={state.name}>
+											{state.name}
 										</Option>
 									);
 								})}
@@ -225,6 +238,7 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 								name="zip_code"
 								label="Zip Code"
 								className="pb-6 w-5/12"
+								rules={[{ required: true }]}
 							>
 								<Input placeholder="Ex: 1212" className="input-billing" />
 							</Form.Item>
