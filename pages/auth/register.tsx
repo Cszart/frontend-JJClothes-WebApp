@@ -1,22 +1,57 @@
 import * as React from 'react';
-import Router from 'next/router';
-
-// Local components
+import { GetServerSideProps } from 'next';
+import Router, { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 
 // Interfaces
-import { Images } from 'interfaces';
+import { Images, User_Rol } from 'interfaces';
 
 // Antd
 import { Button, Form, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { useToasts } from 'react-toast-notifications';
+import { post_user_add } from 'api';
+
+interface Form_Register_Data {
+	email: string;
+	name: string;
+	lastname: string;
+	password: string;
+	repeat_email: string;
+	repeat_password: string;
+	date_birth: string;
+}
 
 const Register = () => {
 	const [form] = Form.useForm();
+	const { addToast } = useToasts();
+	const router = useRouter();
+	const [isLoading, setisLoading] = React.useState<boolean>(false);
 
-	const onFinish = (values: any) => {
-		console.log('Success:', values);
+	const onFinish = async (values: Form_Register_Data): Promise<void> => {
+		setisLoading(true);
+
+		// Check matching passwords
+		if (values.password != values.repeat_password) {
+			addToast("Passwords doesn't match", { appearance: 'error' });
+			return;
+		}
+
+		// Format submit data
+		const submit_data = {
+			firstname: values.name,
+			lastname: values.lastname,
+			email: values.email,
+			password: values.password,
+			birth_date: values.date_birth,
+			rol: User_Rol.NATURAL,
+		};
+
+		const register_response = await post_user_add(submit_data);
+		console.log('\n\n', register_response);
+
+		setisLoading(false);
+		router.push('/');
 	};
 
 	return (
@@ -61,6 +96,7 @@ const Register = () => {
 					>
 						<Input className="input-modified" />
 					</Form.Item>
+
 					{/* Lastname */}
 					<Form.Item
 						name="lastname"
@@ -70,6 +106,7 @@ const Register = () => {
 					>
 						<Input className="input-modified" />
 					</Form.Item>
+
 					{/* Email */}
 					<Form.Item
 						name="email"
@@ -79,15 +116,17 @@ const Register = () => {
 					>
 						<Input className="input-modified" />
 					</Form.Item>
+
 					{/* Repeat email */}
 					<Form.Item
-						name="repeat email"
+						name="repeat_email"
 						label="Repeat email"
 						rules={[{ required: true, message: 'Please repeat your email!' }]}
 						className="pb-3"
 					>
 						<Input className="input-modified" />
 					</Form.Item>
+
 					{/* Password */}
 					<Form.Item
 						name="password"
@@ -97,18 +136,20 @@ const Register = () => {
 					>
 						<Input type="password" className="input-modified" />
 					</Form.Item>
+
 					{/* Repeat password */}
 					<Form.Item
-						name="repeat password"
+						name="repeat_password"
 						label="Repeat password"
 						rules={[{ required: true, message: 'Please repeat your password' }]}
 						className="pb-6"
 					>
 						<Input type="password" className="input-modified" />
 					</Form.Item>
+
 					{/* Date of birth */}
 					<Form.Item
-						name="date of birth"
+						name="date_birth"
 						label="Date of birth"
 						rules={[
 							{ required: true, message: 'Please set the date of your birth' },
@@ -117,8 +158,14 @@ const Register = () => {
 					>
 						<Input name="date" type="date" className="input-modified" />
 					</Form.Item>
+
 					<Form.Item className="w-full pb-3">
-						<Button htmlType="submit" type="primary" className="btn-modified">
+						<Button
+							htmlType="submit"
+							type="primary"
+							loading={isLoading}
+							className="btn-modified"
+						>
 							Register now
 						</Button>
 					</Form.Item>

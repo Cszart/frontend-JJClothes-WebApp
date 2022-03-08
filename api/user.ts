@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { User } from 'interfaces';
 
-export const post_user_add = async (data: User): Promise<any> => {
+export const post_user_add = async (data: any): Promise<any> => {
 	const add_response = await axios.post(
 		`${process.env.NEXT_PUBLIC_API_URL}/user/create_user`,
 		data
