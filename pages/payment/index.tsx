@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 
 // API
@@ -9,7 +10,9 @@ import {
 	get_shoppingCart_byID,
 	patch_shoppingCart_update,
 	post_create_shipmentOrder,
+	get_all_statesPricing,
 	post_order_add,
+	get_bank_all_responses,
 } from 'api';
 
 // Local components
@@ -19,23 +22,24 @@ import {
 	PaymentConfirmation,
 	PaymentPage,
 } from 'components/payment';
+
+// Interfaces
 import {
 	Bill,
 	Order,
 	Payment,
 	Post_Shipment_data,
-	Post_Shipment_response,
 	Product_Item,
+	Shipping_States,
 	ShoppingCart_Update,
 	User,
-	venezuela_states,
 } from 'interfaces';
-import { useRouter } from 'next/router';
 
 const Payment: React.FC<{ user: User }> = ({ user }) => {
 	const router = useRouter();
 
-	// Get shopping cart info
+	////////// React query //////////////
+	// Get shopping cart info //
 	const {
 		data: shoppingCart_data,
 		refetch: shoppingCart_refetch,
@@ -44,6 +48,17 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		get_shoppingCart_byID(user?.shoppingCart._id)
 	);
 
+	// Get states and pricing info //
+	const { data: venezuela_states } = useQuery(['Venezuela_States', user], () =>
+		get_all_statesPricing()
+	);
+
+	// Get states and pricing info //
+	const { data: bank_responses } = useQuery(['Bank_Responses', user], () =>
+		get_bank_all_responses()
+	);
+
+	///////// Variables ///////////////
 	// Forms steps
 	const [form_step, setForm_Step] = React.useState<
 		'billing' | 'payment' | 'confirmation'
@@ -52,12 +67,20 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 	// Forms data
 	const [billing_data, setBilling_Data] = React.useState<Bill>();
 	const [order_response_data, setOrder_Response_Data] = React.useState<Order>();
+
+	// Current data
 	const [current_state, setCurrent_State] = React.useState<string>();
 	const [current_ShipCost, setCurrent_ShipCost] = React.useState<number>();
 	const [current_items, setCurrent_Items] = React.useState<Product_Item[]>([]);
 	const [current_subtotal, setCurrent_subtotal] = React.useState<number>(0);
+	const [current_BankResponses, setCurrent_BankResponses] =
+		React.useState<number>(0);
+	const [current_ProceedPayment, setCurrent_ProceedPayment] =
+		React.useState<boolean>(true);
 
-	// FUNCTIONs
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+	//////////// FUNCTIONs ////////////////
 	// Billing
 	const onFinish_Billing = (values: Bill) => {
 		console.log('-- Payment Billing, form values --', values);
@@ -67,12 +90,54 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		setForm_Step('payment');
 	};
 
-	// Payment
-	const onFinish_Payment = async (values: Payment, bank_selected: number) => {
-		console.log('-- Payment page, form values --', {
-			...values,
-			bank: bank_selected,
+	// Proceed payment
+	const onFinish_Proceed_Payment = async () => {
+		setIsLoading(true);
+
+		console.log(
+			'-- Payment page, proceed payment with items --',
+			current_items
+		);
+
+		// Formar Query params
+		let query_params = '';
+		current_items.forEach((item: Product_Item) => {
+			// Put name
+			query_params = query_params.concat(
+				`name=${item.product.title.replace(/\s/g, '+')}&`
+			);
+			// put image
+			query_params = query_params.concat(`image=${item.product.gallery[0]}&`);
+			// put price
+			query_params = query_params.concat(
+				`amount=${item.product.price - item.product.discount}&`
+			);
+			// put quantity
+			query_params = query_params.concat(`num=${item.quantity}&`);
 		});
+
+		// put order
+		query_params = query_params.concat(`order=${5}&`);
+		// put key
+		query_params = query_params.concat(
+			'key=JmGfhBJMYVTRW8mAa599oSLnjsjVu4O6bRpROuOIGKnG&'
+		);
+		// put reason
+		query_params = query_params.concat('reason=compra');
+
+		console.log('-- Payment page, query params --', query_params);
+
+		let url_to_bank = 'https://bank.vittorioadesso.com/paygateway?';
+		url_to_bank = url_to_bank.concat(query_params);
+
+		window.open(url_to_bank, '_blank');
+
+		setIsLoading(false);
+	};
+
+	// succes Payment
+	const onFinish_Payment = async () => {
+		setIsLoading(true);
 
 		// Format the items from product_item to {quantity: number , product: string (id)}
 		const current_items_formated = current_items.map((item: Product_Item) => {
@@ -85,10 +150,7 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 			current_items_formated &&
 			current_items_formated.length > 0
 		) {
-			// MAKE PAYMENT WITH BANK
-			//
-
-			// CREATE SHIPMENT ORDER
+			//////////// CREATE SHIPMENT ORDER //
 			// Format the items from product_item to {quantity: number , name: string (product name)}
 			const current_items_shipment_formated = current_items.map(
 				(item: Product_Item) => {
@@ -105,32 +167,36 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 					street: billing_data.street,
 					zipcode: billing_data.zip_code,
 				},
-				commerce: 'jjclothes',
+				commerce: 'jjcclothes',
 			};
-
 			console.log(
-				'-- Payment page, create shipment order data --',
+				'-- Payment page, create shipment order submit data --',
 				submit_shipment_data
 			);
 
 			const shipment_order_response = await post_create_shipmentOrder(
 				submit_shipment_data
 			);
-
 			console.log(
 				'-- Payment page, create shipment order response --',
 				shipment_order_response
 			);
 
-			// CREATE ORDER
+			///////////////////// CREATE ORDER on db //
 			// Format submit data
 			const submit_data: Order = {
 				shipping_cost: current_ShipCost ?? 33,
 				user: user._id,
 				bill_info: billing_data,
-				payment_info: { ...values, bank: bank_selected },
+				payment_info: {
+					bank: 1,
+					card_number: 'bank1',
+					security_digits: 'bank1',
+					expiring_date: 'bank1',
+				},
 				items: current_items_formated,
 			};
+			console.log('-- Payment page, create order submit data --', submit_data);
 
 			// Call backend api
 			const order_response = await post_order_add(submit_data);
@@ -140,7 +206,7 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 				_id: shipment_order_response.data.id,
 			});
 
-			// UPDATE SHOPPING CART
+			////////////////// UPDATE SHOPPING CART //
 			// Remove pucharsed items from cart
 			if (user && user.access_token && shoppingCart_data) {
 				const new_items_filtered: Product_Item[] = [];
@@ -180,13 +246,14 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 				}
 			}
 
+			setIsLoading(false);
 			// Next step
 			setForm_Step('confirmation');
 		}
 	};
 
-	// useEffects
-	// Set Items
+	/////////////////// useEffects
+	// Set current Items
 	React.useEffect(() => {
 		// if user is only buying one item
 		if (form_step != 'confirmation') {
@@ -228,19 +295,50 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 	// Find shipping cost
 	React.useEffect(() => {
 		// if state is defined
-		if (current_state) {
-			const state_selected = venezuela_states.filter((itemState) => {
-				return itemState.name === current_state;
-			});
+		if (current_state && venezuela_states) {
+			const state_selected = venezuela_states.filter(
+				(itemState: Shipping_States) => {
+					return itemState.name === current_state;
+				}
+			);
 
 			setCurrent_ShipCost(state_selected[0].price);
 		}
 	}, [current_state]);
 
+	// When bank responses change
+	React.useEffect(() => {
+		console.log('-- Payment page, bank responses --', bank_responses);
+
+		// if bank is defined and current bank hasnt been initialized
+		if (bank_responses && current_BankResponses == 0) {
+			console.log(
+				'-- Payment page, current bank not init --',
+				current_BankResponses
+			);
+			setCurrent_BankResponses(bank_responses.length);
+		}
+
+		// current bank was init
+		if (bank_responses && current_BankResponses > 0) {
+			if (bank_responses.length > current_BankResponses) {
+				console.log(
+					'-- Payment page, succeed current bank ',
+					current_BankResponses,
+					'bank responses ',
+					bank_responses
+				);
+
+				setCurrent_ProceedPayment(false);
+			}
+		}
+	}, [bank_responses]);
+
 	return (
 		<Layout
 			withHeader
 			withFooter
+			show_banks_logos
 			// Session
 			user={user}
 			// Shopping cart
@@ -251,6 +349,7 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 			{form_step === 'billing' && (
 				<PaymentBilling
 					user={user}
+					venezuela_states={venezuela_states ?? []}
 					//Detail Order
 					subtotal={current_subtotal}
 					shippingCost={current_ShipCost}
@@ -268,11 +367,14 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 					billing_data={billing_data}
 					current_items={current_items}
 					setCurrent_Items={setCurrent_Items}
+					isLoading={isLoading}
+					proceedPayment={current_ProceedPayment}
 					//Detail Order
 					subtotal={current_subtotal}
 					shipping_cost={current_ShipCost}
 					// onFinish
 					onFinish_Payment={onFinish_Payment}
+					onFinish_Proceed_Payment={onFinish_Proceed_Payment}
 				/>
 			)}
 

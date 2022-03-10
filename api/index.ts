@@ -1,5 +1,7 @@
 export * from './auth';
+export * from './bank';
 export * from './categories';
+export * from './deliver';
 export * from './order';
 export * from './products';
 export * from './shopping_cart';

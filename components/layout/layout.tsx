@@ -22,6 +22,7 @@ export const Layout: React.FC<Layout_Props> = ({
 	// Footer
 	withFooter = false,
 	custom_footer_color,
+	show_banks_logos = false,
 
 	user,
 
@@ -61,7 +62,12 @@ export const Layout: React.FC<Layout_Props> = ({
 
 			<div className={clsx('w-full', className)}>{children}</div>
 
-			{withFooter && <Footer custom_footer_color={custom_footer_color} />}
+			{withFooter && (
+				<Footer
+					custom_footer_color={custom_footer_color}
+					show_banks_logos={show_banks_logos}
+				/>
+			)}
 
 			{/* Shopping cart modal */}
 			{shoppingCart_data && (

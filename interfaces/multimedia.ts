@@ -1,5 +1,6 @@
 export enum Images {
 	bag_logo = '/img/png/bag_logo.png',
+	degvaBank_logo = '/img/png/degvaBank_logo.png',
 	firstSection = '/img/png/FirstSection.png',
 	forgot_password_picture = '/img/png/forgot_password_picture.png',
 	lines_banner = '/img/png/lines_banner.png',
@@ -14,6 +15,7 @@ export enum Images {
 
 export type Images_Types =
 	| Images.bag_logo
+	| Images.degvaBank_logo
 	| Images.firstSection
 	| Images.forgot_password_picture
 	| Images.lines_banner

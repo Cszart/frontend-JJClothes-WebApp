@@ -17,6 +17,7 @@ export interface Layout_Props {
 	// Props for footer
 	withFooter?: boolean;
 	custom_footer_color?: string;
+	show_banks_logos?: boolean;
 
 	// Actual session
 	session?: Session | null;

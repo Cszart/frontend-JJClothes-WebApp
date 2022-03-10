@@ -1,16 +1,5 @@
 import axios from 'axios';
-import { Order, Post_Shipment_data } from 'interfaces';
-
-// Make shipment order on Arcane team
-export const post_create_shipmentOrder = async (
-	data: Post_Shipment_data
-): Promise<any> => {
-	const add_response = await axios.post(
-		`http://distribuidor-dj.herokuapp.com/api/shipments/`,
-		data
-	);
-	return add_response;
-};
+import { Order } from 'interfaces';
 
 export const post_order_add = async (data: Order): Promise<any> => {
 	const add_response = await axios.post(

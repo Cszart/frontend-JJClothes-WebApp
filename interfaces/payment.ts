@@ -97,6 +97,11 @@ export const venezuela_states = [
 	},
 ];
 
+export interface Shipping_States {
+	name: string;
+	price: number;
+}
+
 // Data to send to distribuidor api
 export interface Post_Shipment_data {
 	productquantity_set: {

@@ -7,50 +7,52 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 
 // antd
-import { Form, Button, Radio, Input, DatePicker } from 'antd';
+import { Button } from 'antd';
 
 // Local components
 import { Divider } from 'components/divider';
 
 // interfaces
-import { Bill, Icons, Payment, Product_Item, User } from 'interfaces';
+import { Bill, Icons, Product_Item, User } from 'interfaces';
 import { ShoppingCart_Item } from 'components/shopping_cart';
 
 interface PaymentPage_Props {
 	user: User;
+
 	// data
 	billing_data?: Bill;
-
 	current_items?: Product_Item[];
 	setCurrent_Items: React.Dispatch<React.SetStateAction<Product_Item[]>>;
+
+	isLoading?: boolean;
+	proceedPayment?: boolean;
 
 	// Detail order
 	subtotal?: number;
 	shipping_cost?: number;
 
 	// onFinish
-	onFinish_Payment: (values: Payment, bank_selected: number) => void;
+	onFinish_Payment: () => void;
+	onFinish_Proceed_Payment: () => Promise<void>;
 }
 export const PaymentPage: React.FC<PaymentPage_Props> = ({
 	billing_data,
-
 	current_items,
 	setCurrent_Items,
+
+	isLoading,
+	proceedPayment,
 
 	subtotal,
 	shipping_cost,
 
 	onFinish_Payment,
+	onFinish_Proceed_Payment,
 }) => {
-	const [form] = Form.useForm();
-
 	// Control vars
 	const [show_items, setShow_Items] = React.useState<boolean>(true);
 
-	// Data
-	const [bank_selected, setBank_Selected] = React.useState<number>(1);
-
-	// FUNCTIONS
+	//////// FUNCTIONS
 	// Remove item from order
 	const remove_from_items_list = async (product_id: string) => {
 		// Filter items matching id
@@ -90,16 +92,7 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 
 		if (items_minus && items_minus.length > 0) setCurrent_Items(items_minus);
 	};
-
-	// on Change radio button
-	const onChange_radioBank = (event: any) => {
-		setBank_Selected(event.target.value);
-	};
-
-	// On finish form (this function only accepts one parameter so cannot pass directly from parent)
-	const onFinish = (values: any) => {
-		onFinish_Payment(values, bank_selected);
-	};
+	////////////////////////////////////////////////////////////////////////////
 
 	return (
 		<div className="payment flex flex-row flex-wrap w-full gap-8 px-[110px]">
@@ -246,87 +239,38 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 				</div>
 			)}
 
-			{/* Payment info */}
-			<Form
-				id="payment-form"
-				form={form}
-				onFinish={onFinish}
-				layout="vertical"
-				autoComplete="off"
-				className="bg-white rounded-lg w-full p-8"
-			>
-				{/* Payment Method */}
-				<Form.Item name="bank" className="mb-8">
-					<h1 className="text-4xl font-semibold mb-4">Payment Method</h1>
-					<Radio.Group
-						onChange={onChange_radioBank}
-						className="flex gap-[100px]"
-					>
-						<Radio value={1}>
-							<h3 className="text-xl">Bank 1</h3>
-						</Radio>
-						<Radio value={2}>
-							<h3 className="text-xl">Bank 2</h3>
-						</Radio>
-					</Radio.Group>
-				</Form.Item>
-
-				{/* Card info */}
-				{bank_selected === 1 && (
-					<div className="flex flex-wrap">
-						{/* Card number */}
-						<Form.Item
-							name="card_number"
-							label="Card number"
-							rules={[
-								{ required: true, message: 'Please input a card number' },
-							]}
-							className="mr-8"
-						>
-							<Input placeholder="0212313242" className="input-billing" />
-						</Form.Item>
-
-						{/* Security numbers */}
-						<Form.Item
-							name="security_digits"
-							label="Security digits"
-							rules={[
-								{ required: true, message: 'Please input a card number' },
-							]}
-							className="mr-8"
-						>
-							<Input placeholder="123" className="input-billing" />
-						</Form.Item>
-
-						{/* Expiring date */}
-						<Form.Item
-							name="expiring_date"
-							label="Expiring date"
-							rules={[
-								{ required: true, message: 'Please input a card number' },
-							]}
-						>
-							<DatePicker className="input-billing" />
-						</Form.Item>
-					</div>
-				)}
-			</Form>
-
 			<div className="flex flex-row justify-end w-full gap-6 mb-8">
 				<Link href={'/'}>
-					<Button ghost className="w-2/12 py-8">
+					<Button ghost loading={isLoading} className="w-2/12 py-8">
 						Continue Shopping
 					</Button>
 				</Link>
 
-				<Button form="payment-form" htmlType="submit" className="w-2/12 py-8">
-					Place My Order
-				</Button>
+				{proceedPayment && (
+					<Button
+						loading={isLoading}
+						onClick={onFinish_Proceed_Payment}
+						className="w-2/12 py-8"
+					>
+						Proceed to pay
+					</Button>
+				)}
+
+				{!proceedPayment && (
+					<Button
+						loading={isLoading}
+						onClick={onFinish_Payment}
+						className="w-2/12 py-8"
+					>
+						Confirm
+					</Button>
+				)}
 			</div>
 		</div>
 	);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 

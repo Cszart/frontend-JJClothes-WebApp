@@ -6,7 +6,7 @@ import { getSession } from 'next-auth/react';
 import clsx from 'clsx';
 
 // Interfaces
-import { Bill, Icons, User, venezuela_states } from 'interfaces';
+import { Bill, Icons, Shipping_States, User } from 'interfaces';
 
 // Local components
 import { Divider } from 'components/divider';
@@ -18,6 +18,8 @@ const { Option } = Select;
 
 interface PaymentBilling_Props {
 	user: User;
+
+	venezuela_states: Shipping_States[];
 
 	// Detail order
 	subtotal?: number;
@@ -31,8 +33,9 @@ interface PaymentBilling_Props {
 }
 
 export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
-	subtotal,
+	venezuela_states,
 
+	subtotal,
 	shippingCost,
 	setCurrent_State,
 
