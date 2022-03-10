@@ -6,7 +6,6 @@ import { ToastProvider } from 'react-toast-notifications';
 
 // Styles
 import 'antd/dist/antd.css';
-import '../styles/globals.css';
 import '../styles/global-tailwind.css';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
