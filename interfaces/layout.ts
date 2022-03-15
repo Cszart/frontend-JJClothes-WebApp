@@ -12,10 +12,12 @@ export interface Layout_Props {
 
 	// Props for header
 	withHeader?: boolean;
+	className_Header?: string;
 	custom_header_color?: string;
 
 	// Props for footer
 	withFooter?: boolean;
+	className_Footer?: string;
 	custom_footer_color?: string;
 	show_banks_logos?: boolean;
 

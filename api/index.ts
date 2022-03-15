@@ -4,6 +4,7 @@ export * from './categories';
 export * from './deliver';
 export * from './order';
 export * from './products';
+export * from './report';
 export * from './shopping_cart';
 export * from './tags';
 export * from './user';

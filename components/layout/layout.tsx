@@ -17,10 +17,12 @@ export const Layout: React.FC<Layout_Props> = ({
 
 	// Header
 	withHeader = false,
+	className_Header,
 	custom_header_color,
 
 	// Footer
 	withFooter = false,
+	className_Footer,
 	custom_footer_color,
 	show_banks_logos = false,
 
@@ -53,6 +55,7 @@ export const Layout: React.FC<Layout_Props> = ({
 		<div className="layout w-screen min-h-screen flex flex-col bg-zinc-101">
 			{withHeader && (
 				<Header
+					className={className_Header}
 					setShow_ShoppingCart={setShow_ShoppingCart}
 					custom_header_color={custom_header_color}
 					user={user}
@@ -64,6 +67,7 @@ export const Layout: React.FC<Layout_Props> = ({
 
 			{withFooter && (
 				<Footer
+					className={className_Footer}
 					custom_footer_color={custom_footer_color}
 					show_banks_logos={show_banks_logos}
 				/>

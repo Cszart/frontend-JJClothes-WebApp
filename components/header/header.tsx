@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 const { Search } = Input;
 
 interface Header_Props {
+	className?: string;
 	custom_header_color?: string;
 	setShow_ShoppingCart: React.Dispatch<React.SetStateAction<boolean>>;
 
@@ -24,6 +25,7 @@ interface Header_Props {
 }
 
 export const Header: React.FC<Header_Props> = ({
+	className,
 	custom_header_color = '#F8EAFF',
 	setShow_ShoppingCart,
 
@@ -41,7 +43,10 @@ export const Header: React.FC<Header_Props> = ({
 
 	return (
 		<div
-			className="header flex flex-wrap justify-between items-center sticky top-0 z-50 w-full mb-14 px-25"
+			className={clsx(
+				'header flex flex-wrap justify-between items-center sticky top-0 z-50 w-full mb-14 px-25',
+				className
+			)}
 			style={{ background: custom_header_color }}
 		>
 			{/* Logo */}
