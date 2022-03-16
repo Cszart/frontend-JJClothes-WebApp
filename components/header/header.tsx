@@ -102,7 +102,7 @@ export const Header: React.FC<Header_Props> = ({
 						</Badge>
 
 						{user && user.rol == User_Rol.ADMIN && (
-							<Link href={'#'}>
+							<Link href={'/reports'}>
 								<FileSearchOutlined className="" />
 							</Link>
 						)}
