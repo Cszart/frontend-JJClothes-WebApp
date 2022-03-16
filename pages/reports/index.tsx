@@ -128,7 +128,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 		refetch: orderByUser_refetch,
 		isFetching: orderByUser_isLoading,
 	} = useQuery(['Orders_By_User', session?.userData, user], () =>
-		get_orders_by_users('2022-01-01', '2022-03-01')
+		get_orders_by_users('2022-01-01', '2022-12-01')
 	);
 
 	// Get orders number by date
@@ -137,7 +137,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 		refetch: orderbyDate_refetch,
 		isFetching: orderbyDate_isLoading,
 	} = useQuery(['Orders_By_Date', session?.userData, user], () =>
-		get_orders_by_date('2022-01-01', '2022-03-01')
+		get_orders_by_date('2022-01-01', '2022-12-01')
 	);
 
 	// Get categories by billing amount
@@ -146,7 +146,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 		refetch: categoryByAmount_refetch,
 		isFetching: categoryByAmount_isLoading,
 	} = useQuery(['Category_By_Amount', session?.userData, user], () =>
-		get_category_by_amount('2022-01-01', '2022-03-01')
+		get_category_by_amount('2022-01-01', '2022-12-01')
 	);
 
 	// Get top ten products by category
@@ -155,7 +155,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 		refetch: topTenProductsByCategory_refetch,
 		isFetching: topTenProductsByCategory_isLoading,
 	} = useQuery(['TopTen_Products_Category', session?.userData, user], () =>
-		get_topTen_products('2022-01-01', '2022-03-01')
+		get_topTen_products('2022-01-01', '2022-12-01')
 	);
 
 	// Get bottom ten products by category
@@ -164,7 +164,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 		refetch: bottomTenProductsByCategory_refetch,
 		isFetching: bottomTenProductsByCategory_isLoading,
 	} = useQuery(['BottomTen_Products_Category', session?.userData, user], () =>
-		get_bottomTen_products('2022-01-01', '2022-03-01')
+		get_bottomTen_products('2022-01-01', '2022-12-01')
 	);
 
 	// Get top ten products by tag
@@ -173,7 +173,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 		refetch: topTenProductsByTags_refetch,
 		isFetching: topTenProductsByTags_isLoading,
 	} = useQuery(['TopTen_Products_Tags', session?.userData, user], () =>
-		get_topTen_tags_products('2022-01-01', '2022-03-01')
+		get_topTen_tags_products('2022-01-01', '2022-12-01')
 	);
 
 	// Get bottom ten products by tag
@@ -182,7 +182,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 		refetch: bottomTenProductsByTags_refetch,
 		isFetching: bottomTenProductsByTags_isLoading,
 	} = useQuery(['BottomTen_Products_Tags', session?.userData, user], () =>
-		get_bottomTen_tags_products('2022-01-01', '2022-03-01')
+		get_bottomTen_tags_products('2022-01-01', '2022-12-01')
 	);
 
 	//////////////////////////////////////////////////////////////////////////
