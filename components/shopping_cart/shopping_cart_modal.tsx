@@ -18,6 +18,7 @@ import {
 	RefetchQueryFilters,
 	QueryObserverResult,
 } from 'react-query';
+import { calculate_roundUp, calculate_PriceDiscount } from 'lib';
 
 interface ShoppingCartModal_props {
 	isOpen: boolean;
@@ -150,9 +151,9 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 		if (items) {
 			let new_total = 0;
 			items.forEach((item: Product_Item) => {
-				new_total =
-					new_total +
-					(item.product.price - item.product.discount) * item.quantity;
+				new_total +=
+					calculate_PriceDiscount(item.product.price, item.product.discount) *
+					item.quantity;
 			});
 			setCurrent_subtotal(new_total);
 		}
@@ -232,9 +233,9 @@ export const ShoppingCart_Modal: React.FC<ShoppingCartModal_props> = ({
 							{/* Subtotal */}
 							<div className="flex justify-end items-center gap-6 mt-10 mb-10 px-14">
 								<h3 className="text-xl text-gray-701">Subtotal</h3>
-								<h1 className="text-2xl font-semibold">{`${
-									Math.round((current_subtotal + Number.EPSILON) * 100) / 100
-								} $`}</h1>
+								<h1 className="text-2xl font-semibold">{`${calculate_roundUp(
+									current_subtotal
+								)} $`}</h1>
 							</div>
 
 							{/* Button */}

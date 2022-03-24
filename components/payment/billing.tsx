@@ -13,6 +13,7 @@ import { Divider } from 'components/divider';
 
 // Antd
 import { Form, Input, Button, Select } from 'antd';
+import { calculate_roundUp } from 'lib';
 
 const { Option } = Select;
 
@@ -88,20 +89,14 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 				<div className="flex flex-row">
 					<h3 className="text-2xl text-black pb-6 w-1/2">Subtotal</h3>
 					<h3 className="text-2xl text-black pb-6 w-1/2">
-						${' '}
-						{subtotal
-							? Math.round((subtotal + Number.EPSILON) * 100) / 100
-							: ''}
+						$ {subtotal ? calculate_roundUp(subtotal) : ''}
 					</h3>
 				</div>
 
 				<div className="flex flex-row">
 					<h3 className="text-2xl text-black pb-6 w-1/2">Shipping Cost</h3>
 					<h3 className="text-2xl text-black pb-6 w-1/2">
-						${' '}
-						{shippingCost
-							? Math.round((shippingCost + Number.EPSILON) * 100) / 100
-							: ''}
+						$ {shippingCost ? calculate_roundUp(shippingCost) : ''}
 					</h3>
 				</div>
 
@@ -115,8 +110,7 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 					<h3 className="text-3xl text-black pb-6 w-1/2">
 						$
 						{subtotal && shippingCost
-							? Math.round((subtotal + shippingCost + Number.EPSILON) * 100) /
-							  100
+							? calculate_roundUp(subtotal + shippingCost)
 							: ''}
 					</h3>
 				</div>

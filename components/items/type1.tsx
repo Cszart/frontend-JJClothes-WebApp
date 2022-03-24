@@ -7,6 +7,7 @@ import { Item_Props } from 'interfaces';
 // Local components
 import { Divider } from 'components/divider';
 import Link from 'next/link';
+import { calculate_PriceDiscount, calculate_roundUp } from 'lib/products';
 
 interface Item_Tag_Props {
 	className?: string;
@@ -41,8 +42,6 @@ export const Item_type_1: React.FC<Item_Props> = ({
 	className,
 	product_item,
 }) => {
-	const discount_amount = (product_item.price * product_item.discount) / 100;
-
 	const [isEnterMouse, setIsEnterMouse] = React.useState<boolean>(false);
 
 	return (
@@ -92,11 +91,10 @@ export const Item_type_1: React.FC<Item_Props> = ({
 
 				{/* price */}
 				<h3 className="text-xl text-gray-701">
-					{`${
-						Math.round(
-							(product_item.price - discount_amount + Number.EPSILON) * 100
-						) / 100
-					} $`}
+					{calculate_roundUp(
+						calculate_PriceDiscount(product_item.price, product_item.discount)
+					)}{' '}
+					$
 				</h3>
 			</div>
 		</Link>

@@ -5,14 +5,13 @@ import clsx from 'clsx';
 import { Item_Props } from 'interfaces';
 import { Divider } from 'components/divider';
 import Link from 'next/link';
+import { calculate_PriceDiscount, calculate_roundUp } from 'lib';
 
 export const Item_Inline: React.FC<Item_Props> = ({
 	id,
 	className,
 	product_item,
 }) => {
-	const discount_amount = (product_item.price * product_item.discount) / 100;
-
 	const [isEnterMouse, setIsEnterMouse] = React.useState<boolean>(false);
 	return (
 		<Link href={`/product?product_id=${product_item._id}`}>
@@ -52,11 +51,10 @@ export const Item_Inline: React.FC<Item_Props> = ({
 
 					{/* price */}
 					<h3 className="text-xl font-medium text-gray-701 mb-6">
-						{`${
-							Math.round(
-								(product_item.price - discount_amount + Number.EPSILON) * 100
-							) / 100
-						} $`}
+						{calculate_roundUp(
+							calculate_PriceDiscount(product_item.price, product_item.discount)
+						)}{' '}
+						$
 					</h3>
 				</div>
 			</div>

@@ -6,6 +6,7 @@ import { Product_Item } from 'interfaces';
 import { Divider } from 'components/divider';
 import { Button } from 'antd';
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { calculate_roundUp, calculate_PriceDiscount } from 'lib';
 
 interface ShoppingCart_Item_Props {
 	product_item: Product_Item;
@@ -21,8 +22,6 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 	substract_quantity,
 }) => {
 	const { quantity, product } = product_item;
-
-	const discount_amount = (product.price * product.discount) / 100;
 
 	const [current_quantity, setCurrent_Quantity] =
 		React.useState<number>(quantity);
@@ -73,11 +72,10 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 
 					{/* price */}
 					<h3 className="text-2xl font-semibold text-gray-701 mb-6">
-						{`${
-							Math.round(
-								(product.price - discount_amount + Number.EPSILON) * 100
-							) / 100
-						} $`}
+						{calculate_roundUp(
+							calculate_PriceDiscount(product.price, product.discount)
+						)}{' '}
+						$
 					</h3>
 				</div>
 			</div>
@@ -105,13 +103,11 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 
 				{/* Total price */}
 				<h1 className="text-2xl font-medium">
-					{`${
-						Math.round(
-							((product.price - product.discount) * current_quantity +
-								Number.EPSILON) *
-								100
-						) / 100
-					} $`}
+					{calculate_roundUp(
+						calculate_PriceDiscount(product.price, product.discount) *
+							current_quantity
+					)}{' '}
+					$
 				</h1>
 
 				{/* Delete button */}

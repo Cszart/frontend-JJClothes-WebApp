@@ -1,12 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import * as React from 'react';
-import { Form, Button } from 'antd';
+import { Button } from 'antd';
 import { Divider } from 'components/divider';
 import { Bill, Icons, Images, Product_Item, User } from 'interfaces';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { CarOutlined } from '@ant-design/icons';
+import { calculate_roundUp } from 'lib';
 
 interface PaymentConfirmation_Props {
 	user: User;
@@ -32,6 +33,14 @@ export const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({
 
 	track_number,
 }) => {
+	const calculate_itemsQty = (): number => {
+		let acumulated = 0;
+
+		if (items) {
+			items.forEach((item: Product_Item) => (acumulated += item.quantity));
+		}
+		return acumulated;
+	};
 	return (
 		<div className="flex flex-row flex-wrap">
 			{/* Nav icons bar */}
@@ -105,26 +114,22 @@ export const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({
 
 					<div className="flex flex-row">
 						<h3 className="text-2xl text-black pb-6 w-1/2">Items</h3>
-						<h3 className="text-2xl text-black pb-6 w-1/2">{items?.length}</h3>
+						<h3 className="text-2xl text-black pb-6 w-1/2">
+							x {calculate_itemsQty()}
+						</h3>
 					</div>
 
 					<div className="flex flex-row">
 						<h3 className="text-2xl text-black pb-6 w-1/2">Subtotal</h3>
 						<h3 className="text-2xl text-black pb-6 w-1/2">
-							${' '}
-							{subtotal
-								? Math.round((subtotal + Number.EPSILON) * 100) / 100
-								: ''}
+							$ {subtotal ? calculate_roundUp(subtotal) : ''}
 						</h3>
 					</div>
 
 					<div className="flex flex-row">
 						<h3 className="text-2xl text-black pb-6 w-1/2">Shipping Cost</h3>
 						<h3 className="text-2xl text-black pb-6 w-1/2">
-							${' '}
-							{shipping_cost
-								? Math.round((shipping_cost + Number.EPSILON) * 100) / 100
-								: ''}
+							$ {shipping_cost ? calculate_roundUp(shipping_cost) : ''}
 						</h3>
 					</div>
 
@@ -135,13 +140,10 @@ export const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({
 
 					<div className="flex flex-row mt-6">
 						<h3 className="text-2xl text-black pb-6 w-1/2">Grand Total</h3>
-						<h3 className="text-3xl text-black pb-6 w-1/2"> Total</h3>
 						<h3 className="text-3xl text-black pb-6 w-1/2">
 							$
 							{subtotal && shipping_cost
-								? Math.round(
-										(subtotal + shipping_cost + Number.EPSILON) * 100
-								  ) / 100
+								? calculate_roundUp(subtotal + shipping_cost)
 								: ''}
 						</h3>
 					</div>

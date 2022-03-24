@@ -16,6 +16,7 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { get_shoppingCart_byID, patch_shoppingCart_update } from 'api';
 import { useQuery } from 'react-query';
+import { calculate_roundUp } from 'lib';
 
 interface ShoppingCart_Modal_Props {
 	user: User;
@@ -246,7 +247,11 @@ export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
 				{/* Subtotal */}
 				<div className="flex justify-end items-center gap-6 mt-10 mb-10 px-14">
 					<h3 className="text-xl text-gray-701">Subtotal</h3>
-					<h1 className="text-2xl font-semibold">{`$ ${shoppingCart_data?.subtotal}`}</h1>
+					{shoppingCart_data && (
+						<h1 className="text-2xl font-semibold">{`$ ${calculate_roundUp(
+							shoppingCart_data?.subtotal
+						)}`}</h1>
+					)}
 				</div>
 
 				{/* Button */}

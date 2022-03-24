@@ -15,6 +15,7 @@ import { Divider } from 'components/divider';
 // interfaces
 import { Bill, Icons, Product_Item, User } from 'interfaces';
 import { ShoppingCart_Item } from 'components/shopping_cart';
+import { calculate_roundUp } from 'lib';
 
 interface PaymentPage_Props {
 	user: User;
@@ -94,6 +95,16 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 	};
 	////////////////////////////////////////////////////////////////////////////
 
+	const calculate_itemsQty = (): number => {
+		let acumulated = 0;
+
+		if (current_items) {
+			current_items.forEach(
+				(item: Product_Item) => (acumulated += item.quantity)
+			);
+		}
+		return acumulated;
+	};
 	return (
 		<div className="payment flex flex-row flex-wrap w-full gap-8 px-[110px]">
 			{/* Nav icons bar */}
@@ -132,20 +143,14 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 					<div className="flex flex-row">
 						<h3 className="text-2xl text-black pb-6 w-1/2">Subtotal</h3>
 						<h3 className="text-2xl text-black pb-6 w-1/2">
-							${' '}
-							{subtotal
-								? Math.round((subtotal + Number.EPSILON) * 100) / 100
-								: ''}
+							$ {subtotal ? calculate_roundUp(subtotal) : ''}
 						</h3>
 					</div>
 
 					<div className="flex flex-row">
 						<h3 className="text-2xl text-black pb-6 w-1/2">Shipping Cost</h3>
 						<h3 className="text-2xl text-black pb-6 w-1/2">
-							${' '}
-							{shipping_cost
-								? Math.round((shipping_cost + Number.EPSILON) * 100) / 100
-								: ''}
+							$ {shipping_cost ? calculate_roundUp(shipping_cost) : ''}
 						</h3>
 					</div>
 
@@ -159,9 +164,7 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 						<h3 className="text-3xl text-black pb-6 w-1/2">
 							$
 							{subtotal && shipping_cost
-								? Math.round(
-										(subtotal + shipping_cost + Number.EPSILON) * 100
-								  ) / 100
+								? calculate_roundUp(subtotal + shipping_cost)
 								: ''}
 						</h3>
 					</div>
@@ -189,7 +192,7 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 						className="flex flex-row justify-between cursor-pointer"
 					>
 						<h3 className="text-base text-black">Items</h3>
-						<h3 className="text-base text-black">x {current_items?.length}</h3>
+						<h3 className="text-base text-black">x {calculate_itemsQty()}</h3>
 					</div>
 
 					<div className="flex flex-row justify-between">

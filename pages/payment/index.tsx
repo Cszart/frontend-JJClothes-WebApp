@@ -34,6 +34,7 @@ import {
 	ShoppingCart_Update,
 	User,
 } from 'interfaces';
+import { calculate_roundUp, calculate_PriceDiscount } from 'lib';
 
 const Payment: React.FC<{ user: User }> = ({ user }) => {
 	const router = useRouter();
@@ -110,7 +111,9 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 			query_params = query_params.concat(`image=${item.product.gallery[0]}&`);
 			// put price
 			query_params = query_params.concat(
-				`amount=${item.product.price - item.product.discount}&`
+				`amount=${calculate_roundUp(
+					calculate_PriceDiscount(item.product.price, item.product.discount)
+				)}&`
 			);
 			// put quantity
 			query_params = query_params.concat(`num=${item.quantity}&`);
@@ -284,9 +287,9 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		if (current_items) {
 			let new_total = 0;
 			current_items.forEach((item: Product_Item) => {
-				new_total =
-					new_total +
-					(item.product.price - item.product.discount) * item.quantity;
+				new_total +=
+					calculate_PriceDiscount(item.product.price, item.product.discount) *
+					item.quantity;
 			});
 			setCurrent_subtotal(new_total);
 		}

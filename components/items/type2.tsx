@@ -6,6 +6,7 @@ import { patch_shoppingCart_add_product } from 'api';
 // Interfaces
 import { Item_Props } from 'interfaces';
 import { Divider } from 'components/divider';
+import { calculate_roundUp, calculate_PriceDiscount } from 'lib';
 
 export const Item_type_2: React.FC<Item_Props> = ({
 	id,
@@ -14,8 +15,6 @@ export const Item_type_2: React.FC<Item_Props> = ({
 	user,
 	shoppingCart_refetch,
 }) => {
-	const discount_amount = (product_item.price * product_item.discount) / 100;
-
 	const [isEnterMouse, setIsEnterMouse] = React.useState<boolean>(false);
 
 	const add_to_shoppingCart = async () => {
@@ -88,11 +87,10 @@ export const Item_type_2: React.FC<Item_Props> = ({
 
 			{/* price */}
 			<h3 className="text-xl font-medium text-gray-701 mb-6">
-				{`${
-					Math.round(
-						(product_item.price - discount_amount + Number.EPSILON) * 100
-					) / 100
-				} $`}
+				{calculate_roundUp(
+					calculate_PriceDiscount(product_item.price, product_item.discount)
+				)}{' '}
+				$
 			</h3>
 
 			{/* add to cart */}
