@@ -8,7 +8,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
-		"start": "next start -p $PORT",
+		"start": "next dev -p $PORT",
 		"heroku-postbuild": "npm run build",
 		"type-check": "tsc --project tsconfig.json --pretty --noEmit",
 		"lint": "eslint --ext js,jsx,ts,tsx --fix",
