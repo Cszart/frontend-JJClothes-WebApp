@@ -27,7 +27,6 @@ import {
 import {
 	Bill,
 	Order,
-	Payment,
 	Post_Shipment_data,
 	Product_Item,
 	Shipping_States,

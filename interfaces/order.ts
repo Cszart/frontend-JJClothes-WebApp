@@ -12,7 +12,7 @@ export type Bill = {
 	courier: string;
 };
 
-export type Payment = {
+export type PaymenType = {
 	bank: number;
 	card_number: string;
 	security_digits: string;
@@ -30,6 +30,6 @@ export type Order = {
 	// Relations
 	user: string;
 	bill_info: Bill;
-	payment_info: Payment;
+	payment_info: PaymenType;
 	items: { quantity: number; product: string }[];
 };
