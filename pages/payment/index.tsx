@@ -120,12 +120,17 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 
 		// put order
 		query_params = query_params.concat(`order=${5}&`);
+
 		// put key
 		query_params = query_params.concat(
 			'key=JmGfhBJMYVTRW8mAa599oSLnjsjVu4O6bRpROuOIGKnG&'
 		);
+
 		// put reason
-		query_params = query_params.concat('reason=compra');
+		query_params = query_params.concat('reason=PagoParaJJClothes&');
+
+		// put reason
+		query_params = query_params.concat(`tax=${current_ShipCost}`);
 
 		console.log('-- Payment page, query params --', query_params);
 
