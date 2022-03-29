@@ -336,6 +336,10 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		}
 	}, [bank_responses]);
 
+	React.useEffect(() => {
+		console.log('-- Payment page, venezuela states', venezuela_states);
+	}, [venezuela_states]);
+
 	return (
 		<Layout
 			withHeader
