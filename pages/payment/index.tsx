@@ -13,6 +13,8 @@ import {
 	get_all_statesPricing,
 	post_order_add,
 	get_bank_all_responses,
+	get_active_bank,
+	post_dakiti_payment,
 } from 'api';
 
 // Local components
@@ -25,6 +27,7 @@ import {
 
 // Interfaces
 import {
+	Bank_Dakiti_Pay_Data,
 	Bill,
 	Order,
 	Post_Shipment_data,
@@ -34,9 +37,11 @@ import {
 	User,
 } from 'interfaces';
 import { calculate_roundUp, calculate_PriceDiscount } from 'lib';
+import { useToasts } from 'react-toast-notifications';
 
 const Payment: React.FC<{ user: User }> = ({ user }) => {
 	const router = useRouter();
+	const { addToast } = useToasts();
 
 	////////// React query //////////////
 	// Get shopping cart info //
@@ -56,6 +61,11 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 	// Get states and pricing info //
 	const { data: bank_responses } = useQuery(['Bank_Responses', user], () =>
 		get_bank_all_responses()
+	);
+
+	// Get active bank info
+	const { data: activeBank_data } = useQuery(['activeBank'], () =>
+		get_active_bank()
 	);
 
 	///////// Variables ///////////////
@@ -81,7 +91,7 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 	//////////// FUNCTIONs ////////////////
-	// Billing
+	// Billing -
 	const onFinish_Billing = (values: Bill) => {
 		console.log('-- Payment Billing, form values --', values);
 		setBilling_Data(values);
@@ -90,8 +100,8 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		setForm_Step('payment');
 	};
 
-	// Proceed payment
-	const onFinish_Proceed_Payment = async () => {
+	// Proceed payment - BUTTON proceed payment for DEGVA bank
+	const onFinish_Proceed_Payment_degva = async () => {
 		setIsLoading(true);
 
 		console.log(
@@ -119,7 +129,7 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		});
 
 		// put order
-		query_params = query_params.concat(`order=${5}&`);
+		query_params = query_params.concat(`order=${current_BankResponses + 1}&`);
 
 		// put key
 		query_params = query_params.concat(
@@ -129,7 +139,7 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		// put reason
 		query_params = query_params.concat('reason=PagoParaJJClothes&');
 
-		// put reason
+		// put shipping cost
 		query_params = query_params.concat(`tax=${current_ShipCost}`);
 
 		console.log('-- Payment page, query params --', query_params);
@@ -142,8 +152,40 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 		setIsLoading(false);
 	};
 
-	// succes Payment
-	const onFinish_Payment = async () => {
+	// Proceed payment - BUTTON proceed payment for DAKITI bank
+	const onFinish_Proceed_Payment_dakiti = async (data: any) => {
+		const submitData: Bank_Dakiti_Pay_Data = {
+			card: data.card_number,
+			cvc: data.cvc,
+			expirationDate: data.expirationDate,
+			nombre: data.owner,
+			monto: current_ShipCost
+				? current_subtotal + current_ShipCost
+				: current_subtotal,
+			descripcion: 'Pago a JJClothes por dakiti',
+			apiKey: process.env.NEXT_PUBLIC_BANK_DAKITI_API_KEY,
+		};
+
+		// Call dakiti api
+		console.log('-- Payment page, dakiti submit data --', submitData);
+		const dakitiPay_response = await post_dakiti_payment(submitData);
+		console.log('-- Payment page, dakiti response --', dakitiPay_response);
+
+		// If ok then show proceed button
+		if (dakitiPay_response.ok) {
+			setCurrent_ProceedPayment(false);
+			addToast('Transaction success, please proceed to confirm', {
+				appearance: 'success',
+			});
+		} else {
+			addToast(dakitiPay_response.message, {
+				appearance: 'error',
+			});
+		}
+	};
+
+	// succes Payment - BUTTON confirm
+	const onFinish_Confirm_Payment = async () => {
 		setIsLoading(true);
 
 		// Format the items from product_item to {quantity: number , product: string (id)}
@@ -174,8 +216,9 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 					street: billing_data.street,
 					zipcode: billing_data.zip_code,
 				},
-				commerce: 'jjcclothes',
+				commerce: 'jjclothes',
 			};
+
 			console.log(
 				'-- Payment page, create shipment order submit data --',
 				submit_shipment_data
@@ -184,34 +227,41 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 			const shipment_order_response = await post_create_shipmentOrder(
 				submit_shipment_data
 			);
+
 			console.log(
 				'-- Payment page, create shipment order response --',
 				shipment_order_response
 			);
+			////////// END CREATING SHIPING DATA //
 
 			///////////////////// CREATE ORDER on db //
 			// Format submit data
 			const submit_data: Order = {
-				shipping_cost: current_ShipCost ?? 33,
+				shipping_cost: current_ShipCost ?? 1,
 				user: user._id,
 				bill_info: billing_data,
 				payment_info: {
 					bank: 1,
-					card_number: 'bank1',
-					security_digits: 'bank1',
-					expiring_date: 'bank1',
+					card_number: shipment_order_response.data.id,
+					security_digits: 'none',
+					expiring_date: 'none',
 				},
 				items: current_items_formated,
 			};
+
 			console.log('-- Payment page, create order submit data --', submit_data);
 
 			// Call backend api
 			const order_response = await post_order_add(submit_data);
+
 			console.log('-- Payment page, create order response --', order_response);
+
 			setOrder_Response_Data({
 				...order_response.data,
 				_id: shipment_order_response.data.id,
 			});
+
+			//////////////////// END CREATE ORDER ON DB //
 
 			////////////////// UPDATE SHOPPING CART //
 			// Remove pucharsed items from cart
@@ -252,6 +302,8 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 					shoppingCart_refetch();
 				}
 			}
+
+			//////////////////// END UPDATING SHOPPING CART //
 
 			setIsLoading(false);
 			// Next step
@@ -317,29 +369,32 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 	React.useEffect(() => {
 		console.log('-- Payment page, bank responses --', bank_responses);
 
-		// if bank is defined and current bank hasnt been initialized
-		if (bank_responses && current_BankResponses == 0) {
-			console.log(
-				'-- Payment page, current bank not init --',
-				current_BankResponses
-			);
-			setCurrent_BankResponses(bank_responses.length);
-		}
-
-		// current bank was init
-		if (bank_responses && current_BankResponses > 0) {
-			if (bank_responses.length > current_BankResponses) {
+		// If Proceed payment is active and work flow is degva
+		if (activeBank_data?.name == 'degva') {
+			// if bank is defined and current bank hasnt been initialized
+			if (bank_responses && current_BankResponses == 0) {
 				console.log(
-					'-- Payment page, succeed current bank ',
-					current_BankResponses,
-					'bank responses ',
-					bank_responses
+					'-- Payment page, current bank not init --',
+					current_BankResponses
 				);
+				setCurrent_BankResponses(bank_responses.length);
+			}
 
-				setCurrent_ProceedPayment(false);
+			// current bank was init
+			if (bank_responses && current_BankResponses > 0) {
+				if (bank_responses.length > current_BankResponses) {
+					console.log(
+						'-- Payment page, succeed current bank ',
+						current_BankResponses,
+						'bank responses ',
+						bank_responses
+					);
+
+					setCurrent_ProceedPayment(false);
+				}
 			}
 		}
-	}, [bank_responses]);
+	}, [bank_responses, activeBank_data]);
 
 	React.useEffect(() => {
 		console.log('-- Payment page, venezuela states', venezuela_states);
@@ -380,12 +435,14 @@ const Payment: React.FC<{ user: User }> = ({ user }) => {
 					setCurrent_Items={setCurrent_Items}
 					isLoading={isLoading}
 					proceedPayment={current_ProceedPayment}
+					activeBank={activeBank_data?.name ?? 'degva'}
 					//Detail Order
 					subtotal={current_subtotal}
 					shipping_cost={current_ShipCost}
 					// onFinish
-					onFinish_Payment={onFinish_Payment}
-					onFinish_Proceed_Payment={onFinish_Proceed_Payment}
+					onFinish_Proceed_Payment_degva={onFinish_Proceed_Payment_degva}
+					onFinish_Proceed_Payment_dakiti={onFinish_Proceed_Payment_dakiti}
+					onFinish_Confirm_Payment={onFinish_Confirm_Payment}
 				/>
 			)}
 

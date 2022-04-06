@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 
 // antd
-import { Button } from 'antd';
+import { Form, Button, Input } from 'antd';
 
 // Local components
 import { Divider } from 'components/divider';
@@ -27,14 +27,16 @@ interface PaymentPage_Props {
 
 	isLoading?: boolean;
 	proceedPayment?: boolean;
+	activeBank: string;
 
 	// Detail order
 	subtotal?: number;
 	shipping_cost?: number;
 
 	// onFinish
-	onFinish_Payment: () => void;
-	onFinish_Proceed_Payment: () => Promise<void>;
+	onFinish_Proceed_Payment_degva: () => Promise<void>;
+	onFinish_Proceed_Payment_dakiti: (data: any) => Promise<void>;
+	onFinish_Confirm_Payment: () => Promise<void>;
 }
 export const PaymentPage: React.FC<PaymentPage_Props> = ({
 	billing_data,
@@ -43,13 +45,17 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 
 	isLoading,
 	proceedPayment,
+	activeBank,
 
 	subtotal,
 	shipping_cost,
 
-	onFinish_Payment,
-	onFinish_Proceed_Payment,
+	onFinish_Proceed_Payment_degva,
+	onFinish_Proceed_Payment_dakiti,
+	onFinish_Confirm_Payment,
 }) => {
+	const [form] = Form.useForm();
+
 	// Control vars
 	const [show_items, setShow_Items] = React.useState<boolean>(true);
 
@@ -105,6 +111,7 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 		}
 		return acumulated;
 	};
+
 	return (
 		<div className="payment flex flex-row flex-wrap w-full gap-8 px-[110px]">
 			{/* Nav icons bar */}
@@ -221,7 +228,7 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 
 			{/* Show items to buy */}
 			{show_items && (
-				<div className="flex flex-col w-full">
+				<div className="flex flex-col w-full mb-8">
 					{/* Items */}
 					{current_items?.map((product_item: Product_Item, key: number) => {
 						return (
@@ -242,6 +249,87 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 				</div>
 			)}
 
+			{activeBank == 'dakiti' && (
+				<Form
+					id="dakiti-payment-form"
+					form={form}
+					onFinish={onFinish_Proceed_Payment_dakiti}
+					layout="vertical"
+					autoComplete="off"
+					className="bg-white rounded-lg w-full py-8 px-16"
+				>
+					<h1 className="text-xl font-semibold text-gray-800 mb-4">
+						Pay with Dakiti Bank
+					</h1>
+
+					{/* Owner */}
+					<Form.Item
+						name="owner"
+						label="Owner"
+						rules={[
+							{
+								required: true,
+								message: 'Please the name of the owner of the card',
+							},
+						]}
+						className="w-full"
+					>
+						<Input
+							placeholder="Write the name on the card..."
+							className="input-billing"
+						/>
+					</Form.Item>
+
+					{/* Card number */}
+					<Form.Item
+						name="card_number"
+						label="Card number"
+						rules={[
+							{ required: true, message: 'Please input your card number' },
+						]}
+						className="w-full"
+					>
+						<Input
+							placeholder="Write the card number"
+							className="input-billing"
+						/>
+					</Form.Item>
+
+					<div className="flex justify-between w-full">
+						{/* CVC */}
+						<Form.Item
+							name="cvc"
+							label="CVC"
+							rules={[{ required: true, message: 'Please input the card cvc' }]}
+							className="w-[40%]"
+						>
+							<Input
+								placeholder="Write the card CVC"
+								className="input-billing"
+							/>
+						</Form.Item>
+
+						{/* date */}
+						<Form.Item
+							name="expirationDate"
+							label="Expiration Date"
+							rules={[
+								{
+									required: true,
+									message: 'Please input the card expiration date',
+								},
+							]}
+							className="w-[40%]"
+						>
+							<Input
+								placeholder="Write expiration date like this 0327 for 03-2027"
+								className="input-billing"
+							/>
+						</Form.Item>
+					</div>
+				</Form>
+			)}
+
 			<div className="flex flex-row justify-end w-full gap-6 mb-8">
 				<Link href={'/'}>
 					<Button ghost loading={isLoading} className="w-2/12 py-8">
@@ -249,10 +337,21 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 					</Button>
 				</Link>
 
-				{proceedPayment && (
+				{proceedPayment && activeBank == 'dakiti' && (
+					<Button
+						form="dakiti-payment-form"
+						htmlType="submit"
+						loading={isLoading}
+						className="w-2/12 py-8"
+					>
+						Proceed to pay
+					</Button>
+				)}
+
+				{proceedPayment && activeBank == 'degva' && (
 					<Button
 						loading={isLoading}
-						onClick={onFinish_Proceed_Payment}
+						onClick={onFinish_Proceed_Payment_degva}
 						className="w-2/12 py-8"
 					>
 						Proceed to pay
@@ -262,7 +361,7 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 				{!proceedPayment && (
 					<Button
 						loading={isLoading}
-						onClick={onFinish_Payment}
+						onClick={onFinish_Confirm_Payment}
 						className="w-2/12 py-8"
 					>
 						Confirm
