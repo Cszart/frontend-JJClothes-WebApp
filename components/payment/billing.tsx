@@ -139,12 +139,10 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 							]}
 							className="pb-6"
 						>
-							<div className="container-antd">
-								<Input
-									placeholder="Ex: Rasyidin Arsyad Nasution"
-									className="input-billing"
-								/>
-							</div>
+							<Input
+								placeholder="Ex: Rasyidin Arsyad Nasution"
+								className="input-billing"
+							/>
 						</Form.Item>
 
 						{/* Email Address */}
@@ -156,12 +154,10 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 							]}
 							className="pb-6"
 						>
-							<div className="container-antd">
-								<Input
-									placeholder="Ex: rasyid.arsyad@gmail.com"
-									className="input-billing"
-								/>
-							</div>
+							<Input
+								placeholder="Ex: rasyid.arsyad@gmail.com"
+								className="input-billing"
+							/>
 						</Form.Item>
 
 						{/* Phone Number */}
@@ -173,12 +169,7 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 							]}
 							className="pb-3"
 						>
-							<div className="container-antd">
-								<Input
-									placeholder="Ex: 089111888999"
-									className="input-billing"
-								/>
-							</div>
+							<Input placeholder="Ex: 089111888999" className="input-billing" />
 						</Form.Item>
 
 						{/* Shipping Address */}
@@ -193,12 +184,10 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 							]}
 							className="pb-6"
 						>
-							<div className="container-antd">
-								<Input
-									placeholder="Ex: Patriot Street Number 666, Ngaklik, Sleman"
-									className="input-billing"
-								/>
-							</div>
+							<Input
+								placeholder="Ex: Patriot Street Number 666, Ngaklik, Sleman"
+								className="input-billing"
+							/>
 						</Form.Item>
 
 						{/* State/Province */}
@@ -208,29 +197,27 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 							className="pb-6"
 							rules={[{ required: true }]}
 						>
-							<div className="container-antd">
-								<Select
-									showSearch
-									placeholder="Ex: Distrito Capital"
-									className="input-billing"
-									onChange={onChange}
-									// Config props
-									optionFilterProp="children"
-									filterOption={(input, option) =>
-										option?.props.children
-											.toLowerCase()
-											.indexOf(input.toLowerCase()) >= 0
-									}
-								>
-									{venezuela_states.map((state, key: number) => {
-										return (
-											<Option key={key} value={state.name}>
-												{state.name}
-											</Option>
-										);
-									})}
-								</Select>
-							</div>
+							<Select
+								showSearch
+								placeholder="Ex: Distrito Capital"
+								className="input-billing"
+								onChange={onChange}
+								// Config props
+								optionFilterProp="children"
+								filterOption={(input, option) =>
+									option?.props.children
+										.toLowerCase()
+										.indexOf(input.toLowerCase()) >= 0
+								}
+							>
+								{venezuela_states.map((state, key: number) => {
+									return (
+										<Option key={key} value={state.name}>
+											{state.name}
+										</Option>
+									);
+								})}
+							</Select>
 						</Form.Item>
 
 						{/* City + Zip Code */}
@@ -241,9 +228,7 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 								className="pb-6 w-7/12"
 								rules={[{ required: true }]}
 							>
-								<div className="container-antd">
-									<Input placeholder="Ex: Caracas" className="input-billing" />
-								</div>
+								<Input placeholder="Ex: Caracas" className="input-billing" />
 							</Form.Item>
 
 							<Form.Item
@@ -252,9 +237,7 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 								className="pb-6 w-5/12"
 								rules={[{ required: true }]}
 							>
-								<div className="container-antd">
-									<Input placeholder="Ex: 1212" className="input-billing" />
-								</div>
+								<Input placeholder="Ex: 1212" className="input-billing" />
 							</Form.Item>
 						</div>
 
@@ -264,25 +247,23 @@ export const PaymentBilling: React.FC<PaymentBilling_Props> = ({
 							label="Choose Courier"
 							rules={[{ required: true }]}
 						>
-							<div className="container-antd">
-								<Select
-									showSearch
-									placeholder="Ex: Domesa"
-									className="input-billing"
-									// Config props
-									optionFilterProp="children"
-									filterOption={(input, option) =>
-										option?.props.children
-											.toLowerCase()
-											.indexOf(input.toLowerCase()) >= 0 ||
-										option?.props.value
-											.toLowerCase()
-											.indexOf(input.toLowerCase()) >= 0
-									}
-								>
-									<Option value="arcane">Arcane</Option>
-								</Select>
-							</div>
+							<Select
+								showSearch
+								placeholder="Ex: Domesa"
+								className="input-billing"
+								// Config props
+								optionFilterProp="children"
+								filterOption={(input, option) =>
+									option?.props.children
+										.toLowerCase()
+										.indexOf(input.toLowerCase()) >= 0 ||
+									option?.props.value
+										.toLowerCase()
+										.indexOf(input.toLowerCase()) >= 0
+								}
+							>
+								<Option value="arcane">Arcane</Option>
+							</Select>
 						</Form.Item>
 					</Form>
 				</div>

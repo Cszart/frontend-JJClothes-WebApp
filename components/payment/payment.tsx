@@ -274,12 +274,10 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 						]}
 						className="w-full"
 					>
-						<div className="container-antd">
-							<Input
-								placeholder="Write the name on the card..."
-								className="input-billing"
-							/>
-						</div>
+						<Input
+							placeholder="Write the name on the card..."
+							className="input-billing"
+						/>
 					</Form.Item>
 
 					{/* Card number */}
@@ -291,12 +289,10 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 						]}
 						className="w-full"
 					>
-						<div className="container-antd">
-							<Input
-								placeholder="Write the card number"
-								className="input-billing"
-							/>
-						</div>
+						<Input
+							placeholder="Write the card number"
+							className="input-billing"
+						/>
 					</Form.Item>
 
 					<div className="flex justify-between w-full">
@@ -307,12 +303,10 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 							rules={[{ required: true, message: 'Please input the card cvc' }]}
 							className="w-[40%]"
 						>
-							<div className="container-antd">
-								<Input
-									placeholder="Write the card CVC"
-									className="input-billing"
-								/>
-							</div>
+							<Input
+								placeholder="Write the card CVC"
+								className="input-billing"
+							/>
 						</Form.Item>
 
 						{/* date */}
@@ -327,12 +321,10 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 							]}
 							className="w-[40%]"
 						>
-							<div className="container-antd">
-								<Input
-									placeholder="Write expiration date like this 0327 for 03-2027"
-									className="input-billing"
-								/>
-							</div>
+							<Input
+								placeholder="Write expiration date like this 0327 for 03-2027"
+								className="input-billing"
+							/>
 						</Form.Item>
 					</div>
 				</Form>
@@ -346,40 +338,34 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 				</Link>
 
 				{proceedPayment && activeBank == 'dakiti' && (
-					<div className="container-antd">
-						<Button
-							form="dakiti-payment-form"
-							htmlType="submit"
-							loading={isLoading}
-							className="w-2/12 py-8"
-						>
-							Proceed to pay
-						</Button>
-					</div>
+					<Button
+						form="dakiti-payment-form"
+						htmlType="submit"
+						loading={isLoading}
+						className="w-2/12 py-8"
+					>
+						Proceed to pay
+					</Button>
 				)}
 
 				{proceedPayment && activeBank == 'degva' && (
-					<div className="container-antd">
-						<Button
-							loading={isLoading}
-							onClick={onFinish_Proceed_Payment_degva}
-							className="w-2/12 py-8"
-						>
-							Proceed to pay
-						</Button>
-					</div>
+					<Button
+						loading={isLoading}
+						onClick={onFinish_Proceed_Payment_degva}
+						className="w-2/12 py-8"
+					>
+						Proceed to pay
+					</Button>
 				)}
 
 				{!proceedPayment && (
-					<div className="container-antd">
-						<Button
-							loading={isLoading}
-							onClick={onFinish_Confirm_Payment}
-							className="w-2/12 py-8"
-						>
-							Confirm
-						</Button>
-					</div>
+					<Button
+						loading={isLoading}
+						onClick={onFinish_Confirm_Payment}
+						className="w-2/12 py-8"
+					>
+						Confirm
+					</Button>
 				)}
 			</div>
 		</div>
