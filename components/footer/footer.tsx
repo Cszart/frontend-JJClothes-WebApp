@@ -32,6 +32,7 @@ export const Footer: React.FC<Footer_Props> = ({
 				})}
 
 			{show_banks_logos && <img src={Images.degvaBank_logo} />}
+			{show_banks_logos && <img src={Images.dakitiBank_logo} />}
 		</div>
 	);
 };

@@ -259,7 +259,7 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 					className="bg-white rounded-lg w-full py-8 px-16"
 				>
 					<h1 className="text-xl font-semibold text-gray-800 mb-4">
-						Pay with Dakiti Bank
+						Pay with Credit Card
 					</h1>
 
 					{/* Owner */}
