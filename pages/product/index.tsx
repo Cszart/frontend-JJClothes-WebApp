@@ -121,7 +121,7 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 			shoppingCart_isLoading={shoppingCart_isLoading}
 		>
 			{/* Breadcrumbs */}
-			<div className="w-full px-[165px] mb-10">
+			<div className="container-antd w-full px-[165px] mb-10">
 				<Breadcrumb>
 					<Breadcrumb.Item>
 						<Link href="/">
@@ -199,7 +199,7 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 						{product && `${product.price - current_discount} $`}
 					</h1>
 
-					<div className="flex flex-wrap gap-6 w-full">
+					<div className="container-antd flex flex-wrap gap-6 w-full">
 						{product?.tags.map((tag_item: Tags, key: number) => {
 							return (
 								<Tag
@@ -218,7 +218,7 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 
 					{/* Buttons */}
 					<div className="flex flex-wrap justify-evenly items-baseline w-full mt-auto">
-						<div className="flex flex-wrap gap-4">
+						<div className="container-antd flex flex-wrap gap-4">
 							<Button
 								ghost
 								icon={<MinusOutlined />}
@@ -236,33 +236,37 @@ const Product_Detail: React.FC<Product_Detail_Props> = ({ user }) => {
 							/>
 						</div>
 
-						<Button
-							onClick={add_to_shoppingCart}
-							icon={<ShoppingCartOutlined />}
-							className={clsx(
-								'flex justify-center items-center gap-2',
-								'text-xl text-white text-bold',
-								'p-4'
-							)}
-						>
-							Add to Cart
-						</Button>
+						<div className="container-antd">
+							<Button
+								onClick={add_to_shoppingCart}
+								icon={<ShoppingCartOutlined />}
+								className={clsx(
+									'flex justify-center items-center gap-2',
+									'text-xl text-white text-bold',
+									'p-4'
+								)}
+							>
+								Add to Cart
+							</Button>
+						</div>
 
-						<Button
-							ghost
-							onClick={() => {
-								router.push({
-									pathname: '/payment',
-									query: {
-										product_id: product?._id,
-										quantity: current_quantity,
-									},
-								});
-							}}
-							className="text-xl text-bold text-center py-4 px-[52px]"
-						>
-							Buy
-						</Button>
+						<div className="container-antd">
+							<Button
+								ghost
+								onClick={() => {
+									router.push({
+										pathname: '/payment',
+										query: {
+											product_id: product?._id,
+											quantity: current_quantity,
+										},
+									});
+								}}
+								className="text-xl text-bold text-center py-4 px-[52px]"
+							>
+								Buy
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>

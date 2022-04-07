@@ -162,9 +162,11 @@ export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
 					/>
 
 					<Link href={'/'}>
-						<Button ghost className="text-center bg-white w-full py-[18px]">
-							Go back shopping
-						</Button>
+						<div className="container-antd">
+							<Button ghost className="text-center bg-white w-full py-[18px]">
+								Go back shopping
+							</Button>
+						</div>
 					</Link>
 				</div>
 
@@ -256,9 +258,11 @@ export const ShoppingCart_Modal: React.FC<ShoppingCart_Modal_Props> = ({
 
 				{/* Button */}
 				<Link href={'/payment/billing'}>
-					<Button className="self-center text-center text-xl text-bold rounded-lg w-[80%] mb-10 py-4">
-						Checkout
-					</Button>
+					<div className="container-antd">
+						<Button className="self-center text-center text-xl text-bold rounded-lg w-[80%] mb-10 py-4">
+							Checkout
+						</Button>
+					</div>
 				</Link>
 			</div>
 		</Layout>

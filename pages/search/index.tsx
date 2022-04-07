@@ -3,11 +3,7 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 
 // API
-import {
-	get_products_byTag_or_Name,
-	get_products_related,
-	get_shoppingCart_byID,
-} from 'api';
+import { get_products_byTag_or_Name, get_shoppingCart_byID } from 'api';
 
 // Local components
 import { Layout } from 'components/layout';
@@ -79,7 +75,7 @@ const Home: React.FC<any> = ({ session, user }) => {
 
 			{/* Show more button */}
 			{show_rows * 4 < search_products.length && (
-				<div className="flex items-center w-full gap-8 mb-14">
+				<div className="container-antd flex items-center w-full gap-8 mb-14">
 					<Divider className="w-full" custom_divider_color="#a3e4db" />
 					<Button
 						ghost

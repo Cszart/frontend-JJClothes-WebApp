@@ -274,10 +274,12 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 						]}
 						className="w-full"
 					>
-						<Input
-							placeholder="Write the name on the card..."
-							className="input-billing"
-						/>
+						<div className="container-antd">
+							<Input
+								placeholder="Write the name on the card..."
+								className="input-billing"
+							/>
+						</div>
 					</Form.Item>
 
 					{/* Card number */}
@@ -289,10 +291,12 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 						]}
 						className="w-full"
 					>
-						<Input
-							placeholder="Write the card number"
-							className="input-billing"
-						/>
+						<div className="container-antd">
+							<Input
+								placeholder="Write the card number"
+								className="input-billing"
+							/>
+						</div>
 					</Form.Item>
 
 					<div className="flex justify-between w-full">
@@ -303,10 +307,12 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 							rules={[{ required: true, message: 'Please input the card cvc' }]}
 							className="w-[40%]"
 						>
-							<Input
-								placeholder="Write the card CVC"
-								className="input-billing"
-							/>
+							<div className="container-antd">
+								<Input
+									placeholder="Write the card CVC"
+									className="input-billing"
+								/>
+							</div>
 						</Form.Item>
 
 						{/* date */}
@@ -321,16 +327,18 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 							]}
 							className="w-[40%]"
 						>
-							<Input
-								placeholder="Write expiration date like this 0327 for 03-2027"
-								className="input-billing"
-							/>
+							<div className="container-antd">
+								<Input
+									placeholder="Write expiration date like this 0327 for 03-2027"
+									className="input-billing"
+								/>
+							</div>
 						</Form.Item>
 					</div>
 				</Form>
 			)}
 
-			<div className="flex flex-row justify-end w-full gap-6 mb-8">
+			<div className="container-antd flex flex-row justify-end w-full gap-6 mb-8">
 				<Link href={'/'}>
 					<Button ghost loading={isLoading} className="w-2/12 py-8">
 						Continue Shopping
@@ -338,34 +346,40 @@ export const PaymentPage: React.FC<PaymentPage_Props> = ({
 				</Link>
 
 				{proceedPayment && activeBank == 'dakiti' && (
-					<Button
-						form="dakiti-payment-form"
-						htmlType="submit"
-						loading={isLoading}
-						className="w-2/12 py-8"
-					>
-						Proceed to pay
-					</Button>
+					<div className="container-antd">
+						<Button
+							form="dakiti-payment-form"
+							htmlType="submit"
+							loading={isLoading}
+							className="w-2/12 py-8"
+						>
+							Proceed to pay
+						</Button>
+					</div>
 				)}
 
 				{proceedPayment && activeBank == 'degva' && (
-					<Button
-						loading={isLoading}
-						onClick={onFinish_Proceed_Payment_degva}
-						className="w-2/12 py-8"
-					>
-						Proceed to pay
-					</Button>
+					<div className="container-antd">
+						<Button
+							loading={isLoading}
+							onClick={onFinish_Proceed_Payment_degva}
+							className="w-2/12 py-8"
+						>
+							Proceed to pay
+						</Button>
+					</div>
 				)}
 
 				{!proceedPayment && (
-					<Button
-						loading={isLoading}
-						onClick={onFinish_Confirm_Payment}
-						className="w-2/12 py-8"
-					>
-						Confirm
-					</Button>
+					<div className="container-antd">
+						<Button
+							loading={isLoading}
+							onClick={onFinish_Confirm_Payment}
+							className="w-2/12 py-8"
+						>
+							Confirm
+						</Button>
+					</div>
 				)}
 			</div>
 		</div>

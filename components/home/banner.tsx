@@ -96,7 +96,7 @@ const Home_banner: React.FC<Home_banner_props> = ({
 				/>
 
 				{/* Buttons */}
-				<div className="flex flex-wrap gap-14 z-10">
+				<div className="container-antd flex flex-wrap gap-14 z-10">
 					<Button
 						icon={<ShoppingCartOutlined />}
 						onClick={add_to_shoppingCart}

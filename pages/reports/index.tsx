@@ -896,7 +896,7 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 					{option_selected}
 				</h1>
 
-				<div className="flex flex-wrap justify-center gap-4 mb-4">
+				<div className="container-antd flex flex-wrap justify-center gap-4 mb-4">
 					{/* Datepicker */}
 					<DatePicker.RangePicker
 						defaultValue={[
@@ -909,22 +909,26 @@ const Reports: React.FC<Reports_Props> = ({ session, user }) => {
 					/>
 
 					{/* Refresh button */}
-					<Tooltip_Antd title="Refetch data">
-						<Button
-							loading={
-								orderByUser_isLoading ||
-								orderbyDate_isLoading ||
-								categoryByAmount_isLoading ||
-								topTenProductsByTags_isLoading ||
-								bottomTenProductsByTags_isLoading ||
-								topTenProductsByCategory_isLoading ||
-								bottomTenProductsByCategory_isLoading
-							}
-							onClick={onRefresh_button}
-						>
-							Refresh
-						</Button>
-					</Tooltip_Antd>
+					<div className="container-antd">
+						<Tooltip_Antd title="Refetch data">
+							<div className="container-antd">
+								<Button
+									loading={
+										orderByUser_isLoading ||
+										orderbyDate_isLoading ||
+										categoryByAmount_isLoading ||
+										topTenProductsByTags_isLoading ||
+										bottomTenProductsByTags_isLoading ||
+										topTenProductsByCategory_isLoading ||
+										bottomTenProductsByCategory_isLoading
+									}
+									onClick={onRefresh_button}
+								>
+									Refresh
+								</Button>
+							</div>
+						</Tooltip_Antd>
+					</div>
 				</div>
 
 				{/* Content, graphics */}

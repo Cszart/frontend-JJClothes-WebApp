@@ -103,13 +103,15 @@ export const SelectActiveBank_Modal: React.FC<ShoppingCartModal_props> = ({
 										</div>
 
 										{activeBank_data && (
-											<Select
-												defaultValue={activeBank_data.name}
-												onChange={handleChange}
-											>
-												<Option value="degva">DEGVA bank</Option>
-												<Option value="dakiti">Dakiti bank</Option>
-											</Select>
+											<div className="container-antd">
+												<Select
+													defaultValue={activeBank_data.name}
+													onChange={handleChange}
+												>
+													<Option value="degva">DEGVA bank</Option>
+													<Option value="dakiti">Dakiti bank</Option>
+												</Select>
+											</div>
 										)}
 									</>
 								)}

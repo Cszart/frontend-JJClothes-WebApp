@@ -65,9 +65,12 @@ const Forgot_password = () => {
 
 					{/* Button */}
 					<Form.Item className="w-full pb-3">
-						<Button htmlType="submit" className={clsx('btn-modified')}>
-							Recover password
-						</Button>
+						<div className="container-antd">
+							{' '}
+							<Button htmlType="submit" className={clsx('btn-modified')}>
+								Recover password
+							</Button>
+						</div>
 					</Form.Item>
 				</Form>
 			</div>

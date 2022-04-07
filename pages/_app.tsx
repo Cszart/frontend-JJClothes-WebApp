@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import { ToastProvider } from 'react-toast-notifications';
 
 // Styles
+
 import 'antd/dist/antd.css';
 import '../styles/global-tailwind.css';
 

@@ -81,7 +81,7 @@ export const ShoppingCart_Item: React.FC<ShoppingCart_Item_Props> = ({
 			</div>
 
 			{/* Functional buttons */}
-			<div className="flex items-center justify-end gap-6 w-1/2">
+			<div className="container-antd flex items-center justify-end gap-6 w-1/2">
 				{/* Minus button */}
 				<Button
 					type="primary"

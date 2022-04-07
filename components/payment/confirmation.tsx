@@ -84,9 +84,11 @@ export const PaymentConfirmation: React.FC<PaymentConfirmation_Props> = ({
 					</h3>
 
 					<Link href={'/'}>
-						<Button className="px-5 py-8" htmlType="submit">
-							Go to home page
-						</Button>
+						<div className="container-antd">
+							<Button className="px-5 py-8" htmlType="submit">
+								Go to home page
+							</Button>
+						</div>
 					</Link>
 				</div>
 			</div>

@@ -97,14 +97,14 @@ export const Header: React.FC<Header_Props> = ({
 					)}
 				>
 					{/* Search and icons */}
-					<div className="flex justify-between gap-4">
+					<div className="container-antd flex justify-between gap-4">
 						<Search
 							placeholder="Search"
 							onSearch={onSearch}
 							className="w-[70%]"
 						/>
 
-						<div className="flex justify-between items-center gap-6">
+						<div className="container-antd flex justify-between items-center gap-6">
 							<Badge count={shoppinCart_items_count} overflowCount={8}>
 								<ShoppingOutlined
 									className=""
